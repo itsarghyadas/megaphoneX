@@ -53,8 +53,11 @@ export default function ProfileForm() {
     console.log(token, tokenSecret);
   }, [token, tokenSecret]);
 
+  const publicUrl = `${process.env.NEXT_PUBLIC_WEB_URL}api/accestoken`;
+  console.log(publicUrl);
+
   function getUserAccessTokenData(userId: string) {
-    fetch(`${process.env.PUBLIC_WEB_URL}/api/accesstoken`, {
+    fetch(`${process.env.NEXT_PUBLIC_WEB_URL}api/accesstoken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
