@@ -3,7 +3,6 @@ import { useUser } from "@clerk/nextjs";
 import { ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
 
 export default function SiteNav() {
   const { isSignedIn, user } = useUser();
@@ -11,7 +10,7 @@ export default function SiteNav() {
   const userAvatar = user?.imageUrl;
 
   return (
-    <section className="max-w-5xl mx-auto py-10 flex items-center justify-between">
+    <section className="max-w-5xl mx-auto p-5 flex items-center justify-between">
       <div className="site__logo">
         <p className="font-bold text-xl">megaphoneX</p>
       </div>
