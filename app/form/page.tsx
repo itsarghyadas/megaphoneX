@@ -16,37 +16,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import oAuth from "oauth-1.0a";
-import crypto from "crypto";
 
 const bearerToken = process.env.TWITTER_BEARER_KEY;
 
 function getRetweetIds(tweetId: string) {
   console.log(tweetId);
-  const res = axios.get(
-    `https://api.twitter.com/2/tweets/1705077498579665067/retweeted_by`,
-    {
-      headers: {
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    }
-  );
-  res.then((res) => {
-    console.log(res.data);
-  });
+  fetch(`https://api.twitter.com/2/tweets/1705077498579665067/retweeted_by`, {
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch retweet ids");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
-
-const oauth = new oAuth({
-  consumer: {
-    key: process.env.CONSUMER_APY_KEY || "",
-    secret: process.env.CONSUMER_APY_SECRET || "",
-  },
-  signature_method: "HMAC-SHA1",
-  hash_function(base_string, key) {
-    return crypto.createHmac("sha1", key).update(base_string).digest("base64");
-  },
-});
 
 const formSchema = z.object({
   posturl: z.string().nonempty(),
