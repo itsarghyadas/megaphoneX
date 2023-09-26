@@ -23,6 +23,7 @@ function getRetweetIds(tweetId: string) {
   console.log(tweetId);
   fetch(`https://api.twitter.com/2/tweets/1705077498579665067/retweeted_by`, {
     headers: {
+      "User-Agent": "v2RetweetedByUsersJS",
       Authorization: `Bearer ${bearerToken}`,
     },
   })
@@ -53,7 +54,7 @@ export default function ProfileForm() {
   }, [token, tokenSecret]);
 
   function getUserAccessTokenData(userId: string) {
-    fetch("http://localhost:3000/api/accesstoken", {
+    fetch(`${process.env.PUBLIC_WEB_URL}/api/accesstoken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
