@@ -7,6 +7,8 @@ export default authMiddleware({
     "/sign-up",
     "/api/users",
     "/api/accesstoken",
+    "/api/retweet",
+    "/api/likes",
   ],
 });
 
