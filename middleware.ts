@@ -9,6 +9,8 @@ export default authMiddleware({
     "/api/accesstoken",
     "/api/retweet",
     "/api/likes",
+    "/api/quote",
+    "/api/reply",
   ],
 });
 

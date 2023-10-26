@@ -73,4 +73,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  body::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, transparent, black, transparent);
+  }
 }

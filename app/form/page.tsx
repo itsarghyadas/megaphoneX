@@ -71,6 +71,56 @@ function getLikeIds(tweetId: string, token: string, tokenSecret: string) {
     });
 }
 
+function getQuoteIds(tweetId: string, token: string, tokenSecret: string) {
+  fetch(`${webUrl}api/quote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ tweetId, token, tokenSecret }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch quoted data");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success === false) {
+        throw new Error("Failed to fetch quoted data");
+      }
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+}
+
+function getReplyIds(tweetId: string, token: string, tokenSecret: string) {
+  fetch(`${webUrl}api/reply`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ tweetId, token, tokenSecret }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch reply data");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success === false) {
+        throw new Error("Failed to fetch reply data");
+      }
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+}
+
 function getUserAccessTokenData(
   userId: string,
   setToken: Function,
@@ -166,13 +216,15 @@ export default function ProfileForm() {
     const tweetId = matchedId[1];
     getRetweetIds(tweetId, token, tokenSecret);
     getLikeIds(tweetId, token, tokenSecret);
+    getQuoteIds(tweetId, token, tokenSecret);
+    getReplyIds(tweetId, token, tokenSecret);
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onsubmit)}
-        className="max-w-xl mx-auto space-y-8 px-10 py-20"
+        className="max-w-xl mx-auto space-y-8 px-10 py-10"
       >
         <FormField
           control={form.control}
