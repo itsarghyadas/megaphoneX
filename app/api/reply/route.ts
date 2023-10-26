@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import oAuth from "oauth-1.0a";
+import axios from "axios";
+import { auth } from "@clerk/nextjs";
 
 const consumer_key = process.env.CONSUMER_APY_KEY as string;
 const consumer_secret = process.env.CONSUMER_APY_SECRET as string;
@@ -21,7 +23,7 @@ export async function POST(req: NextRequest) {
     key: token,
     secret: tokenSecret,
   };
-  const endpointURL = `https://api.twitter.com/2/tweets/search/recent?tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id,referenced_tweets&query=conversation_id:1705077498579665067`;
+  const endpointURL = `https://api.twitter.com/2/tweets/search/recent?tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id,referenced_tweets&query=quotes_of_tweet_id:${tweetId}`;
 
   const authHeader = oauth.toHeader(
     oauth.authorize(
@@ -32,23 +34,47 @@ export async function POST(req: NextRequest) {
       tokenData
     )
   );
+
+  let config = {
+    method: "get",
+    url: endpointURL,
+    headers: {
+      "User-Agent": "v2RecentSearchJS",
+      authorization: `Bearer ${bearer_token}`,
+    },
+  };
+
   try {
-    const response = await fetch(endpointURL, {
-      headers: {
-        "User-Agent": "v2RecentSearchJS",
-        authorization: authHeader["Authorization"],
-      },
-    });
-    if (!response.ok) {
-      const errorData = await response.json();
+    const response = await axios.request(config);
+    if (response.status !== 200) {
+      const errorData = response.data;
       console.log("errorData", errorData);
       const errorMessage = `Failed to fetch reply ids - reason - ${errorData.status} - status - ${errorData.detail}`;
       throw new Error(errorMessage);
     }
 
-    const data = await response.json();
-    console.log("reply-data", data);
+    const data = response.data;
+
+    let authorIds: string[] = [];
+
+    for (let i = 0; i < data.data.length; i++) {
+      const tweet = data.data[i];
+      const referencedTweets = tweet.referenced_tweets;
+
+      for (let j = 0; j < referencedTweets.length; j++) {
+        const referencedTweet = referencedTweets[j];
+        if (referencedTweet.id === tweetId) {
+          authorIds.push(tweet.author_id);
+          break;
+        }
+      }
+    }
+    const resultCount = authorIds.length;
+
+    console.log("ids", authorIds);
     return NextResponse.json({
+      authorIds,
+      resultCount,
       message: "reply ids are fetched successfully",
       success: true,
     });
