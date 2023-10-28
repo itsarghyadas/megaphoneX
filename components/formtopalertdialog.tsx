@@ -34,8 +34,8 @@ export function FromtopAlertDialog() {
             everyone will receive the DM.
             <br />
             <br />
-            But don't worry, we will give you a list of people who didn't get a
-            DM so you can send it manually.
+            But don&apos;t worry, we will give you a list of people who
+            didn&apos;t get a DM so you can send it manually.
             <br />
             <br />
             <span className="font-semibold text-amber-500">
