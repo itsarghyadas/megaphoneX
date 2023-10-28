@@ -26,7 +26,8 @@ export function FromtopAlertDialog() {
         <AlertDialogHeader>
           <AlertDialogTitle>Read this before you start 👋</AlertDialogTitle>
           <AlertDialogDescription className="text-justify">
-            As we are on a Twitter API Basic plan, we don't have access to the{" "}
+            As we are on a Twitter API Basic plan, we don&apos;t have access to
+            the{" "}
             <span className="font-bold text-red-500 underline underline-offset-2">
               followers
             </span>{" "}
