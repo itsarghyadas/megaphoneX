@@ -18,6 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { object, string, z } from "zod";
+import TextInputField from "@/components/ui/form-components/textinputfield";
 
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 
@@ -121,6 +122,56 @@ function getReplyIds(tweetId: string, token: string, tokenSecret: string) {
     });
 }
 
+function getFollowIds(tweetId: string, token: string, tokenSecret: string) {
+  fetch(`${webUrl}api/follow`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ tweetId, token, tokenSecret }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch follow data");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success === false) {
+        throw new Error("Failed to fetch follow data");
+      }
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+}
+
+function sendDms(tweetId: string, token: string, tokenSecret: string) {
+  fetch(`${webUrl}api/directmessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ tweetId, token, tokenSecret }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to send DM");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success === false) {
+        throw new Error("Failed to send DM");
+      }
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+}
+
 function getUserAccessTokenData(
   userId: string,
   setToken: Function,
@@ -178,15 +229,15 @@ export default function ProfileForm() {
   const userId = user?.id;
 
   const FormSchema = object({
-    posturl: string().nonempty(),
-    dmmessage: string().nonempty(),
+    posturl: string().min(1),
+    dmmessage: string().min(1),
     checkboxItems: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
         message: "You have to select at least one item.",
       }),
     type: z.enum(["2mins", "24hours", "48hours"], {
-      required_error: "You need to select a notification type.",
+      required_error: "You need to select a execution time.",
     }),
     usernumber: z.enum(["50", "100", "200"], {
       required_error: "You need to select total user number.",
@@ -208,16 +259,51 @@ export default function ProfileForm() {
 
   function onsubmit(data: FieldValues) {
     console.log(data);
+    const checkboxItems = data.checkboxItems;
+    const executionTime = data.type;
+    console.log(executionTime);
+    const totalUserNumber = data.usernumber;
+    if (
+      checkboxItems.includes("retweet") &&
+      checkboxItems.includes("comment")
+    ) {
+      console.log("retweet and comment and 2mins");
+    }
     const posturl = data.posturl;
     const matchedId = posturl.match(/\/status\/(\d+)/);
     if (!matchedId) {
       return;
     }
     const tweetId = matchedId[1];
-    getRetweetIds(tweetId, token, tokenSecret);
-    getLikeIds(tweetId, token, tokenSecret);
-    getQuoteIds(tweetId, token, tokenSecret);
-    getReplyIds(tweetId, token, tokenSecret);
+
+    let delayTime;
+
+    switch (executionTime) {
+      case "2mins":
+        delayTime = 1 * 1 * 1000;
+        break;
+      case "24hours":
+        delayTime = 24 * 60 * 60 * 1000;
+        break;
+      case "48hours":
+        delayTime = 48 * 60 * 60 * 1000;
+        break;
+      default:
+        delayTime = 0;
+    }
+    if (checkboxItems.includes("retweet")) {
+      setTimeout(() => getRetweetIds(tweetId, token, tokenSecret), delayTime);
+    }
+    if (checkboxItems.includes("like")) {
+      setTimeout(() => getLikeIds(tweetId, token, tokenSecret), delayTime);
+    }
+    if (checkboxItems.includes("quote")) {
+      setTimeout(() => getQuoteIds(tweetId, token, tokenSecret), delayTime);
+    }
+    if (checkboxItems.includes("comment")) {
+      setTimeout(() => getReplyIds(tweetId, token, tokenSecret), delayTime);
+    }
+    sendDms(tweetId, token, tokenSecret);
   }
 
   return (
@@ -247,6 +333,7 @@ export default function ProfileForm() {
             </FormItem>
           )}
         />
+        <TextInputField control={form.control} name="posturl" />
         <FormField
           control={form.control}
           name="dmmessage"

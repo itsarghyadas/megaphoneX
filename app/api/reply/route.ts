@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import oAuth from "oauth-1.0a";
 import axios from "axios";
-import { auth } from "@clerk/nextjs";
 
 const consumer_key = process.env.CONSUMER_APY_KEY as string;
 const consumer_secret = process.env.CONSUMER_APY_SECRET as string;
@@ -23,8 +22,7 @@ export async function POST(req: NextRequest) {
     key: token,
     secret: tokenSecret,
   };
-  const endpointURL = `https://api.twitter.com/2/tweets/search/recent?tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id,referenced_tweets&query=quotes_of_tweet_id:${tweetId}`;
-
+  const endpointURL = `https://api.twitter.com/2/tweets/search/recent?tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id,referenced_tweets&query=conversation_id:${tweetId}`;
   const authHeader = oauth.toHeader(
     oauth.authorize(
       {
@@ -39,8 +37,8 @@ export async function POST(req: NextRequest) {
     method: "get",
     url: endpointURL,
     headers: {
+      Authorization: `Bearer ${bearer_token}`,
       "User-Agent": "v2RecentSearchJS",
-      authorization: `Bearer ${bearer_token}`,
     },
   };
 
@@ -60,7 +58,6 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < data.data.length; i++) {
       const tweet = data.data[i];
       const referencedTweets = tweet.referenced_tweets;
-
       for (let j = 0; j < referencedTweets.length; j++) {
         const referencedTweet = referencedTweets[j];
         if (referencedTweet.id === tweetId) {
@@ -71,7 +68,7 @@ export async function POST(req: NextRequest) {
     }
     const resultCount = authorIds.length;
 
-    console.log("ids", authorIds);
+    console.log("reply-ids", authorIds);
     return NextResponse.json({
       authorIds,
       resultCount,
@@ -79,7 +76,7 @@ export async function POST(req: NextRequest) {
       success: true,
     });
   } catch (error: any) {
-    console.error(error.message);
+    console.error(error);
     return NextResponse.json({
       message: error.message,
       success: false,
