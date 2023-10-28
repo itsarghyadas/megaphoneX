@@ -5,21 +5,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-interface TextInputFieldProps {
+interface TextareaFieldProps {
   label: string;
   name: string;
   control: any;
   placeholder?: string;
 }
 
-function TextInputField({
+const TextareaField: React.FC<TextareaFieldProps> = ({
   label,
   name,
   control,
   placeholder,
-}: TextInputFieldProps): JSX.Element {
+}) => {
   return (
     <FormField
       control={control}
@@ -30,7 +30,7 @@ function TextInputField({
             {label}
           </FormLabel>
           <FormControl>
-            <Input
+            <Textarea
               spellCheck={false}
               autoComplete="off"
               placeholder={placeholder}
@@ -43,6 +43,6 @@ function TextInputField({
       )}
     />
   );
-}
+};
 
-export default TextInputField;
+export default TextareaField;

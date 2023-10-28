@@ -4,21 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldValues } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Form } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { object, string, z } from "zod";
 import TextInputField from "@/components/ui/form-components/textinputfield";
+import TextareaField from "@/components/ui/form-components/textareafield";
+import CheckboxItem from "@/components/ui/form-components/checkboxitem";
+import RadioSelector from "@/components/ui/form-components/radiogroup";
+import {
+  executionTimeOptions,
+  totalUserNumbers,
+  checkboxItems,
+} from "@/data/formitemsdata";
 
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 
@@ -199,29 +196,6 @@ function getUserAccessTokenData(
     });
 }
 
-const checkboxItems = [
-  {
-    number: 1,
-    id: "retweet",
-    label: "Retweet",
-  },
-  {
-    number: 2,
-    id: "comment",
-    label: "Comment",
-  },
-  {
-    number: 3,
-    id: "like",
-    label: "Like",
-  },
-  {
-    number: 4,
-    id: "quote",
-    label: "Quote",
-  },
-];
-
 export default function ProfileForm() {
   const [token, setToken] = useState("");
   const [tokenSecret, setTokenSecret] = useState("");
@@ -234,13 +208,13 @@ export default function ProfileForm() {
     checkboxItems: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
-        message: "You have to select at least one item.",
+        message: "* You have to select at least one item.",
       }),
-    type: z.enum(["2mins", "24hours", "48hours"], {
-      required_error: "You need to select a execution time.",
+    timeperiod: z.enum(["2mins", "24hours", "48hours"], {
+      required_error: "* You need to select one time period.",
     }),
     usernumber: z.enum(["50", "100", "200"], {
-      required_error: "You need to select total user number.",
+      required_error: "* You need to select total user number.",
     }),
   });
 
@@ -260,15 +234,8 @@ export default function ProfileForm() {
   function onsubmit(data: FieldValues) {
     console.log(data);
     const checkboxItems = data.checkboxItems;
-    const executionTime = data.type;
-    console.log(executionTime);
+    const executionTime = data.timeperiod;
     const totalUserNumber = data.usernumber;
-    if (
-      checkboxItems.includes("retweet") &&
-      checkboxItems.includes("comment")
-    ) {
-      console.log("retweet and comment and 2mins");
-    }
     const posturl = data.posturl;
     const matchedId = posturl.match(/\/status\/(\d+)/);
     if (!matchedId) {
@@ -310,171 +277,46 @@ export default function ProfileForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onsubmit)}
-        className="max-w-xl mx-auto space-y-8 px-10 py-10"
+        className="max-w-xl mx-auto space-y-8 px-7 md:px-10 py-10 lg:py-20"
       >
-        <FormField
+        <TextInputField
+          label="Post URL"
           control={form.control}
           name="posturl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold underline underline-offset-4">
-                Post URL
-              </FormLabel>
-              <FormControl>
-                <Input
-                  spellCheck={false}
-                  autoComplete="off"
-                  placeholder="shadcn"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="https://twitter.com/username/status/1234567890"
         />
-        <TextInputField control={form.control} name="posturl" />
-        <FormField
-          control={form.control}
+        <TextareaField
+          label="DM Template"
           name="dmmessage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold underline underline-offset-4">
-                DM Template
-              </FormLabel>
-              <FormControl>
-                <Textarea
-                  spellCheck={false}
-                  autoComplete="off"
-                  placeholder="shadcn"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          control={form.control}
+          placeholder="Hey! How are you?"
         />
-        <div className="flex flex-col gap-y-3.5">
-          <FormLabel className="font-bold underline underline-offset-4">
-            Conditions
-          </FormLabel>
-          {checkboxItems.map((item) => (
-            <FormField
-              key={item.number}
-              control={form.control}
-              name="checkboxItems"
-              render={({ field }) => {
-                return (
-                  <FormItem
-                    key={item.id}
-                    className="space-y-0 flex items-center gap-x-2"
-                  >
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value?.includes(item.id)}
-                        onCheckedChange={(checked) => {
-                          return checked
-                            ? field.onChange([...field.value, item.id])
-                            : field.onChange(
-                                field.value?.filter(
-                                  (value) => value !== item.id
-                                )
-                              );
-                        }}
-                      />
-                    </FormControl>
-                    <FormLabel className="text-sm font-normal">
-                      {item.label}
-                    </FormLabel>
-                  </FormItem>
-                );
-              }}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col gap-y-3.5">
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel className="font-bold underline underline-offset-4">
-                  Execute after
-                </FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="2mins" />
-                      </FormControl>
-                      <FormLabel className="font-normal">2 mins</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="24hours" />
-                      </FormControl>
-                      <FormLabel className="font-normal">24 hours</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="48hours" />
-                      </FormControl>
-                      <FormLabel className="font-normal">48 hours</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-y-3.5">
-          <FormField
-            control={form.control}
-            name="usernumber"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel className="font-bold underline underline-offset-4">
-                  Total User
-                </FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="50" />
-                      </FormControl>
-                      <FormLabel className="font-normal">50</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="100" />
-                      </FormControl>
-                      <FormLabel className="font-normal">100</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="200" />
-                      </FormControl>
-                      <FormLabel className="font-normal">200</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <Button type="submit">Start your giveaway</Button>
+        <CheckboxItem
+          label="Conditions"
+          name="checkboxItems"
+          control={form.control}
+          checkboxItems={checkboxItems}
+        />
+        <RadioSelector
+          control={form.control}
+          name="timeperiod"
+          label="Select the time period"
+          radioOptions={executionTimeOptions}
+        />
+        <RadioSelector
+          control={form.control}
+          name="usernumber"
+          label="Total User"
+          radioOptions={totalUserNumbers}
+        />
+        <Button
+          className="w-full"
+          role="button"
+          type="submit"
+          aria-label="Start your giveaway"
+        >
+          Start your giveaway
+        </Button>
       </form>
     </Form>
   );
