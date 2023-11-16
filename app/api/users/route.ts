@@ -36,14 +36,6 @@ export async function POST(req: any) {
     const eventType: EventType = evt.type as EventType;
     console.log("eventType: ", eventType);
 
-    if (eventType === "user.created") {
-      console.log("user created");
-
-      return new Response("User created successfully", {
-        status: 200,
-      });
-    }
-
     if (eventType === "session.created") {
       console.log("session created");
 
@@ -60,7 +52,7 @@ export async function POST(req: any) {
       });
     }
 
-    return new Response("Unknown event type", {
+    return new Response("Event type not handled", {
       status: 400,
     });
   } catch (error) {
@@ -71,4 +63,4 @@ export async function POST(req: any) {
   }
 }
 
-type EventType = "user.created" | "session.ended" | "session.created" | "*";
+type EventType = "session.ended" | "session.created";
