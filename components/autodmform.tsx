@@ -5,8 +5,7 @@ import { useForm, FieldValues } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useEffect, useState } from "react";
-import { object, string, z } from "zod";
+import { z } from "zod";
 import TextInputField from "@/components/form-components/textinputfield";
 import TextareaField from "@/components/form-components/textareafield";
 import CheckboxItem from "@/components/form-components/checkboxitem";
@@ -82,7 +81,7 @@ export default function AutoDMForm({ onSubmit }: AutoDmFormProps) {
           radioOptions={totalUserNumbers}
         />
         <Button
-          className="w-full"
+          className="w-full text-[0.95rem] text-white bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] transition-[box-shadow_0.15s_ease,_transform_0.15s_ease] shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:translate-y-0.5 active:-translate-y-0.5 active:shadow-[inset_0px_3px_7px_#6903f6] hover:text-white"
           role="button"
           type="submit"
           aria-label="Start your giveaway"

@@ -47,8 +47,20 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
-    const ids = data.data.map((item: any) => item.id);
     const { result_count } = data.meta;
+    let ids: string[] = [];
+
+    if (result_count > 0) {
+      if (data.data && data.data.length > 0) {
+        ids = data.data.map((item: any) => item.id);
+        console.log("liked-ids", ids);
+      } else {
+        throw new Error("No users found in the response");
+      }
+    } else {
+      throw new Error("No likes found for this tweet");
+    }
+
     console.log("liked-ids", ids);
     return NextResponse.json({
       ids,

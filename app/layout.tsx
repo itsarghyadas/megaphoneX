@@ -1,10 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Bricolage_Grotesque, Gabarito } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import SiteNav from "@/components/navbar";
 
 const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+});
+
+const gabarito = Gabarito({
   subsets: ["latin"],
 });
 
@@ -21,7 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={bricolageGrotesque.className}>
+        <body className={gabarito.className}>
           <SiteNav />
           {children}
         </body>

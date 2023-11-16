@@ -31,6 +31,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
           </FormLabel>
           <FormControl>
             <Textarea
+              className=" placeholder:text-gray-800/30"
               spellCheck={false}
               autoComplete="off"
               placeholder={placeholder}

@@ -27,8 +27,50 @@ export default function MainFormPage() {
     }
   }, [userId]);
 
+  type TwitterApiCall = (
+    tweetId: string,
+    token: string,
+    tokenSecret: string
+  ) => Promise<any>;
+
+  const twitterApiCalls: Record<string, TwitterApiCall> = {
+    retweet: getRetweetIds,
+    like: getLikeIds,
+    quote: getQuoteIds,
+    comment: getReplyIds,
+  };
+
+  async function getIdsFromTwitterApi(
+    tweetId: string,
+    token: string,
+    tokenSecret: string,
+    checkboxItems: string[]
+  ) {
+    const totalIdsArray: string[][] = [];
+
+    for (const item of checkboxItems) {
+      const apiCall = twitterApiCalls[item];
+      if (apiCall) {
+        try {
+          const result = await apiCall(tweetId, token, tokenSecret);
+          const ids = result.ids || result.authorIds;
+          if (ids && ids.length > 0) {
+            totalIdsArray.push(ids);
+          }
+        } catch (error) {
+          console.log(
+            `${item}__Error: Error occurred while getting ${item} ids in the client side`
+          );
+        }
+      }
+    }
+
+    return totalIdsArray;
+  }
+
   async function onsubmit(data: FieldValues) {
     console.log(data);
+
     const posturl: string = data.posturl;
     const message: string = data.dmmessage;
     const checkboxItems: string[] = data.checkboxItems;
@@ -48,39 +90,35 @@ export default function MainFormPage() {
 
     let delayTime: number = delayTimes[executionTime] || 0;
 
-    let retweetResult: any, likeResult: any, quoteResult: any, replyResult: any;
-
     setTimeout(async () => {
-      if (checkboxItems.includes("retweet")) {
-        retweetResult = await getRetweetIds(tweetId, token, tokenSecret);
-      }
-      if (checkboxItems.includes("like")) {
-        likeResult = await getLikeIds(tweetId, token, tokenSecret);
-      }
-      if (checkboxItems.includes("quote")) {
-        quoteResult = await getQuoteIds(tweetId, token, tokenSecret);
-      }
-      if (checkboxItems.includes("comment")) {
-        replyResult = await getReplyIds(tweetId, token, tokenSecret);
-      }
-      let replyIds: string[] = [];
-      let retweetIds: string[] = [];
-      let likeIds: string[] = [];
-      let quoteIds: string[] = [];
+      const totalIdsArray = await getIdsFromTwitterApi(
+        tweetId,
+        token,
+        tokenSecret,
+        checkboxItems
+      );
 
-      if (replyResult) {
-        replyIds = replyResult.authorIds;
+      console.log(totalIdsArray);
+      let commonIds: string[] = [];
+
+      if (totalIdsArray.length === 0) {
+        console.log("Total__Ids__Array is empty");
+        return;
       }
 
-      if (retweetResult) {
-        retweetIds = retweetResult.ids;
+      if (totalIdsArray.length < 2) {
+        commonIds = totalIdsArray[0];
+      } else {
+        commonIds = totalIdsArray[0].filter((id: any) =>
+          totalIdsArray.every((array) => array.includes(id))
+        );
       }
-      if (likeResult) {
-        likeIds = likeResult.ids;
-      }
-      if (quoteResult) {
-        quoteIds = quoteResult.ids;
-      }
+      console.log(commonIds);
+      commonIds = commonIds.slice(
+        0,
+        Math.min(commonIds.length, totalUserNumber)
+      );
+      console.log(commonIds);
     }, delayTime);
   }
 

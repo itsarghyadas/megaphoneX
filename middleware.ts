@@ -4,13 +4,12 @@ export default authMiddleware({
     "/",
     "/privacy",
     "/sign-in",
-    "/sign-up",
-    "/api/users",
+    /*     "/api/users",
     "/api/accesstoken",
     "/api/retweet",
     "/api/likes",
     "/api/quote",
-    "/api/reply",
+    "/api/reply", */
   ],
 });
 

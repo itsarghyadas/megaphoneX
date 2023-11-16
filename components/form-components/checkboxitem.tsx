@@ -44,7 +44,7 @@ const CheckboxItem: React.FC<CheckboxItemProps> = ({
                 >
                   <FormControl>
                     <Checkbox
-                      className="border-gray-300 rounded"
+                      className="border-gray-300 rounded data-[state=checked]:bg-[#6903f6]"
                       checked={field.value?.includes(item.id)}
                       onCheckedChange={(checked) => {
                         return checked

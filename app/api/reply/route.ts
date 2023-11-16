@@ -52,26 +52,30 @@ export async function POST(req: NextRequest) {
     }
 
     const data = response.data;
-
+    const { result_count } = data.meta;
     let authorIds: string[] = [];
 
-    for (let i = 0; i < data.data.length; i++) {
-      const tweet = data.data[i];
-      const referencedTweets = tweet.referenced_tweets;
-      for (let j = 0; j < referencedTweets.length; j++) {
-        const referencedTweet = referencedTweets[j];
-        if (referencedTweet.id === tweetId) {
-          authorIds.push(tweet.author_id);
-          break;
-        }
+    if (result_count > 0) {
+      if (data.data && data.data.length > 0) {
+        authorIds = data.data
+          .filter((tweet: any) =>
+            tweet.referenced_tweets.some(
+              (refTweet: any) => refTweet.id === tweetId
+            )
+          )
+          .map((tweet: any) => tweet.author_id);
+      } else {
+        throw new Error("No tweets found in the response");
       }
+    } else {
+      throw new Error("No replies found for this tweet");
     }
-    const resultCount = authorIds.length;
+    const actual__author__count = authorIds.length;
 
     console.log("reply-ids", authorIds);
     return NextResponse.json({
       authorIds,
-      resultCount,
+      actual__author__count,
       message: "reply ids are fetched successfully",
       success: true,
     });

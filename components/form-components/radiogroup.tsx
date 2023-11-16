@@ -46,7 +46,10 @@ function RadioSelector({
                   className="flex items-center space-x-3 space-y-0 border p-2 rounded-md"
                 >
                   <FormControl>
-                    <RadioGroupItem value={option.value} />
+                    <RadioGroupItem
+                      className="text-[#6903f6]"
+                      value={option.value}
+                    />
                   </FormControl>
                   <FormLabel className="font-normal">{option.label}</FormLabel>
                 </FormItem>
