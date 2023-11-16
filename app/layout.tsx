@@ -1,18 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Gabarito } from "next/font/google";
+import { Gabarito } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import SiteNav from "@/components/navbar";
-
-const bricolageGrotesque = Bricolage_Grotesque({
-  subsets: ["latin"],
-});
 
 const gabarito = Gabarito({
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
+  viewport: "width=device-width, initial-scale=1",
   title: "megaphoneX",
   description: "Your own retweet bot",
 };

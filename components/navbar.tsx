@@ -50,6 +50,7 @@ export default function SiteNav() {
                 <div className="ml-5">
                   <Button
                     variant="outline"
+                    className="text-sm"
                     onClick={() => {
                       signOut().then(() => {
                         window.location.href = "/";
