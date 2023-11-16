@@ -6,6 +6,7 @@ export default authMiddleware({
     "/sign-in",
     "/pricing",
     "/api/stripe-checkout",
+    "/api/stripe-webhook",
   ],
 });
 
