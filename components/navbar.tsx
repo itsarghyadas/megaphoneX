@@ -4,11 +4,15 @@ import { ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FromtopAlertDialog } from "./formtopalertdialog";
+import { useClerk } from "@clerk/nextjs";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function SiteNav() {
   const { isSignedIn, user } = useUser();
   const username = user?.username;
   const userAvatar = user?.imageUrl;
+  const { signOut } = useClerk();
 
   return (
     <section className="navbar ">
@@ -29,7 +33,12 @@ export default function SiteNav() {
           </ClerkLoading>
           <ClerkLoaded>
             {!isSignedIn ? (
-              <Button>Sign In</Button>
+              <Link
+                href="/sign-in"
+                className={buttonVariants({ variant: "default" })}
+              >
+                Sign in
+              </Link>
             ) : (
               <div className="account__details flex items-center gap-x-3">
                 <img
@@ -38,6 +47,18 @@ export default function SiteNav() {
                   alt="useravatar"
                 />
                 <p className="font-semibold text-sm">{username}</p>
+                <div className="ml-5">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      signOut().then(() => {
+                        window.location.href = "/";
+                      });
+                    }}
+                  >
+                    Sign out
+                  </Button>
+                </div>
               </div>
             )}
           </ClerkLoaded>
