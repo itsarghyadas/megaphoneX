@@ -13,9 +13,11 @@ export default function SiteNav() {
   return (
     <section className="navbar ">
       <div className="border-b border-dashed">
-        <section className="max-w-5xl mx-auto py-3.5 px-5 flex items-center justify-between ">
+        <section className="max-w-5xl mx-auto h-14 py-2 px-5 flex items-center justify-between ">
           <div className="site__logo">
-            <p className="font-bold text-lh">megaphoneX</p>
+            <a href="/" className="font-bold text-lg">
+              megaphoneX
+            </a>
           </div>
           <ClerkLoading>
             <div className="flex items-center space-x-4">
