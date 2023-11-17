@@ -1,5 +1,7 @@
 import { Webhook } from "svix";
 import { clerkClient } from "@clerk/nextjs";
+import connectDB from "@/lib/mongodb";
+import User from "@/models/usermodel";
 
 const webhookSecret: string = process.env.CLERK_WEBHOOK_SECRET || "";
 
@@ -12,6 +14,7 @@ interface Event {
 }
 
 export async function POST(req: any) {
+  const dbClient = await connectDB();
   const payload = await req.json();
   const payloadString = JSON.stringify(payload);
   const svixId = req.headers.get("svix-id");
@@ -41,6 +44,14 @@ export async function POST(req: any) {
     console.log("userName", userName);
     console.log("userTwitterName", userTwitterName);
     console.log("userEmailId", userEmailId);
+    const userCredits = 0;
+    const newUser = new User({
+      user_id: userId,
+      username: userName,
+      useremail: userEmailId,
+      credits: userCredits,
+    });
+    await newUser.save();
 
     const eventType: EventType = evt.type as EventType;
     console.log("eventType: ", eventType);
