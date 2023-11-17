@@ -51,9 +51,6 @@ export async function POST(req: any) {
     const existingUser = await User.findOne({ user_id: userId });
     if (existingUser) {
       console.log("User already exists");
-      return new Response("User already exists", {
-        status: 400,
-      });
     } else {
       // create new user
       const newUser = new User({
