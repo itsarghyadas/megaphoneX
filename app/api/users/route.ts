@@ -38,6 +38,7 @@ export async function POST(req: any) {
     const userId = evt.data.user_id;
     const user = await clerkClient.users.getUser(userId);
     console.log("user", user);
+
     const userName = user.username;
     const userTwitterName = user.firstName;
     const userEmailId = user.emailAddresses[0].emailAddress;
@@ -45,13 +46,24 @@ export async function POST(req: any) {
     console.log("userTwitterName", userTwitterName);
     console.log("userEmailId", userEmailId);
     const userCredits = 0;
-    const newUser = new User({
-      user_id: userId,
-      username: userName,
-      useremail: userEmailId,
-      credits: userCredits,
-    });
-    await newUser.save();
+
+    // check if user exists in db
+    const existingUser = await User.findOne({ user_id: userId });
+    if (existingUser) {
+      console.log("User already exists");
+      return new Response("User already exists", {
+        status: 400,
+      });
+    } else {
+      // create new user
+      const newUser = new User({
+        user_id: userId,
+        username: userName,
+        useremail: userEmailId,
+        credits: userCredits,
+      });
+      await newUser.save();
+    }
 
     const eventType: EventType = evt.type as EventType;
     console.log("eventType: ", eventType);
