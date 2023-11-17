@@ -1,4 +1,5 @@
 import { Webhook } from "svix";
+import { currentUser } from "@clerk/nextjs";
 
 const webhookSecret: string = process.env.CLERK_WEBHOOK_SECRET || "";
 
@@ -13,6 +14,8 @@ interface Event {
 
 export async function POST(req: any) {
   const payload = await req.json();
+  const user = await currentUser();
+  console.log("user", user);
   const payloadString = JSON.stringify(payload);
   const svixId = req.headers.get("svix-id");
   const svixIdTimeStamp = req.headers.get("svix-timestamp");
