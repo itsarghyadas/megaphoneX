@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connection: { isConnected?: number } = {};
 
-const connectDB = async (url = process.env.MONGO_URL) => {
+const connectDB = async (url = process.env.MONGODB_URI) => {
   if (!url) {
     throw new Error("MONGO_URL is not defined");
   }
