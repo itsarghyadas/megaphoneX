@@ -1,7 +1,8 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { Stripe as StripeTypes } from "stripe";
-
+import connectDB from "@/lib/mongodb";
+import User from "@/models/usermodel";
 const secretKey = process.env.STRIPE_SECRET_KEY;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -14,6 +15,7 @@ const stripe = new Stripe(secretKey, {
 });
 
 export async function POST(request: NextRequest) {
+  const dbClient = await connectDB();
   const payload = await request.text();
   const signature = request.headers.get("stripe-signature");
 
@@ -35,14 +37,30 @@ export async function POST(request: NextRequest) {
     if (eventType === "checkout.session.completed") {
       const session = evt.data.object as StripeTypes.Checkout.Session;
       console.log("Session", session);
-      const userEmail = session.customer_email;
-      console.log("User email", userEmail);
+      const totalAmountMoney = session.amount_total;
 
-      if (!userEmail) {
-        console.log("User email not found");
-        return new NextResponse("Error occurred", {
-          status: 400,
-        });
+      let newCredits = 0;
+
+      if (totalAmountMoney === 300) {
+        newCredits = 70;
+      } else if (totalAmountMoney === 600) {
+        newCredits = 140;
+      } else if (totalAmountMoney === 900) {
+        newCredits = 210;
+      } else if (totalAmountMoney === 1500) {
+        newCredits = 500;
+      }
+
+      const customer_email = session.customer_email;
+      console.log("User email", customer_email);
+      const user = await User.findOne({ useremail: customer_email });
+      if (!user) {
+        console.log("User not found");
+      } else {
+        let totalToken = user.credits || 0;
+        totalToken += newCredits;
+        user.credits = totalToken;
+        await user.save();
       }
     }
 
