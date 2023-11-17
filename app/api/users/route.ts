@@ -1,21 +1,18 @@
 import { Webhook } from "svix";
-import { currentUser } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs";
 
 const webhookSecret: string = process.env.CLERK_WEBHOOK_SECRET || "";
 
 interface Event {
   data: {
     id: string;
-    email_addresses: { email_address: string }[];
-    created_at: number;
+    user_id: string; // clerk user id
   };
   type: string;
 }
 
 export async function POST(req: any) {
   const payload = await req.json();
-  const user = await currentUser();
-  console.log("user", user);
   const payloadString = JSON.stringify(payload);
   const svixId = req.headers.get("svix-id");
   const svixIdTimeStamp = req.headers.get("svix-timestamp");
@@ -35,13 +32,15 @@ export async function POST(req: any) {
   try {
     evt = wh.verify(payloadString, svixHeaders) as Event;
     console.log("Successfully verified event", evt);
+    const userId = evt.data.user_id;
+    const user = await clerkClient.users.getUser(userId);
+    console.log("user", user);
 
     const eventType: EventType = evt.type as EventType;
     console.log("eventType: ", eventType);
 
     if (eventType === "session.created") {
       console.log("session created");
-
       return new Response("Session created successfully", {
         status: 200,
       });

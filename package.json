@@ -31,6 +31,8 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "lucide-react": "^0.274.0",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.1",
     "next": "^13.5.6",
     "oauth-1.0a": "^2.2.6",
     "postcss": "^8.4.31",
