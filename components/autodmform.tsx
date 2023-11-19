@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldValues } from "react-hook-form";
@@ -17,8 +18,13 @@ import {
 } from "@/data/formitemsdata";
 
 const FormSchema = z.object({
-  posturl: z.string().min(1),
-  dmmessage: z.string().min(1),
+  posturl: z
+    .string()
+    .min(1)
+    .regex(/^https:\/\/twitter\.com\/[a-zA-Z0-9_]{1,15}\/status\/\d+$/, {
+      message: "Invalid Twitter link",
+    }),
+  dmmessage: z.string().min(10, { message: "Minimum 10 characters required" }),
   checkboxItems: z
     .array(z.string())
     .refine((value) => value.some((item) => item), {
