@@ -6,7 +6,10 @@ import SiteNav from "@/components/navbar";
 import { Toaster } from "sonner";
 
 const gabarito = Gabarito({
+  weight: ["500", "700"],
   subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {

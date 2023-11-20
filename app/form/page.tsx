@@ -8,6 +8,7 @@ import {
   getLikeIds,
   getQuoteIds,
   getReplyIds,
+  sendDms,
 } from "@/util/twitterapicall";
 import { getUserAccessTokenData } from "@/util/useracesstoken";
 import { toast } from "sonner";
@@ -76,17 +77,20 @@ export default function MainFormPage() {
   }
 
   async function onsubmit(data: FieldValues) {
-    console.log("onsubmit");
     toast.success("Your submission is done");
     console.log(data);
-    router.push("/");
+    data.userId = userId;
+    router.push("/dashboard");
+    let timestamp: string = "";
     try {
       const saveInDB = await axios.post(url, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log("Data saved successfully", saveInDB);
+      const resultData = saveInDB.data;
+      console.log("Data saved successfully", resultData.data);
+      timestamp = resultData.data.timestamp;
     } catch (error: any) {
       console.error("API request failed", error.response.data);
     }
@@ -137,6 +141,20 @@ export default function MainFormPage() {
         Math.min(commonIds.length, totalUserNumber)
       );
       console.log("Final CommondID -", commonIds);
+
+      // Send DMs to the commonIds
+      try {
+        await sendDms(
+          tweetId,
+          commonIds,
+          token,
+          tokenSecret,
+          message,
+          timestamp
+        );
+      } catch (error) {
+        console.error("Error sending DMs", error);
+      }
     }, delayTime);
   }
 

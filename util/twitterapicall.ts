@@ -2,42 +2,129 @@ import axios from "axios";
 
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 
-async function makePostRequest(url: string, data: object) {
-  try {
-    const res = await axios.post(url, data);
-    if (!res || !res.data || !res.data.success) {
-      throw new Error(`Failed to fetch ${url} data`);
-    }
-    return res.data;
-  } catch (error: any) {
-    console.error(error.message);
-    return "No data received from the server";
-  }
-}
-
-async function makeTwitterApiRequest(
-  endpoint: string,
+export async function getRetweetIds(
   tweetId: string,
   token: string,
   tokenSecret: string
 ) {
-  const url = `${webUrl}api/${endpoint}`;
-  const data = { tweetId, token, tokenSecret };
-  return makePostRequest(url, data);
+  try {
+    const res = await axios.post(`${webUrl}api/retweet`, {
+      tweetId,
+      token,
+      tokenSecret,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch retweet data");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
 }
 
-export const getRetweetIds = makeTwitterApiRequest.bind(null, "retweet");
-export const getLikeIds = makeTwitterApiRequest.bind(null, "likes");
-export const getQuoteIds = makeTwitterApiRequest.bind(null, "quote");
-export const getReplyIds = makeTwitterApiRequest.bind(null, "reply");
-
-export const sendDms = async (
+export async function getLikeIds(
   tweetId: string,
   token: string,
+  tokenSecret: string
+) {
+  try {
+    const res = await axios.post(`${webUrl}api/likes`, {
+      tweetId,
+      token,
+      tokenSecret,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch liked data");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
+export async function getQuoteIds(
+  tweetId: string,
+  token: string,
+  tokenSecret: string
+) {
+  try {
+    const res = await axios.post(`${webUrl}api/quote`, {
+      tweetId,
+      token,
+      tokenSecret,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch quoted data");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
+export async function getReplyIds(
+  tweetId: string,
+  token: string,
+  tokenSecret: string
+) {
+  try {
+    const res = await axios.post(`${webUrl}api/reply`, {
+      tweetId,
+      token,
+      tokenSecret,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch reply data");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
+export async function sendDms(
+  tweetId: string,
+  commonIds: string[],
+  token: string,
   tokenSecret: string,
-  message: string
-) => {
-  const url = `${webUrl}api/directmessage`;
-  const data = { tweetId, token, tokenSecret, message };
-  return makePostRequest(url, data);
-};
+  message: string,
+  timestamp: string
+) {
+  try {
+    const res = await axios.post(`${webUrl}api/directmessage`, {
+      tweetId,
+      commonIds,
+      token,
+      tokenSecret,
+      message,
+      timestamp,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to send DM");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      console.log("res.data in sendDms", res.data);
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
