@@ -4,6 +4,7 @@ import { Gabarito } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import SiteNav from "@/components/navbar";
 import { Toaster } from "sonner";
+import TanStackProvider from "@/providers/tanstackprovider";
 
 const gabarito = Gabarito({
   weight: ["500", "700"],
@@ -27,9 +28,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={gabarito.className}>
-          <SiteNav />
-          {children}
-          <Toaster richColors />
+          <TanStackProvider>
+            <SiteNav />
+            {children}
+            <Toaster richColors />
+          </TanStackProvider>
         </body>
       </html>
     </ClerkProvider>

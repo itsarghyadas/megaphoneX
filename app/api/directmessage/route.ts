@@ -3,7 +3,8 @@ import crypto from "crypto";
 import oAuth from "oauth-1.0a";
 import connectDB from "@/lib/mongodb";
 import TwitterForm from "@/models/twittermodel";
-import DmDetails from "@/models/dmmodel";
+import SentDmDetails from "@/models/senddmmodel";
+import UnsentDmDetails from "@/models/unsenddmmodel";
 
 const consumer_key = process.env.CONSUMER_APY_KEY as string;
 const consumer_secret = process.env.CONSUMER_APY_SECRET as string;
@@ -70,7 +71,6 @@ export async function POST(req: NextRequest) {
   const bodyData = await req.json();
   const { tweetId, commonIds, token, tokenSecret, message, timestamp } =
     bodyData;
-  console.log("bodyData in sendDms", bodyData);
   await connectDB();
   const tokenData = {
     key: token,
@@ -116,7 +116,6 @@ export async function POST(req: NextRequest) {
       }
 
       const data = await response.json();
-      console.log("data in sendDms", data);
 
       await TwitterForm.updateOne(
         { tweetID: tweetId, timestamp: timestamp },
@@ -124,63 +123,63 @@ export async function POST(req: NextRequest) {
       );
 
       sentIDs.push(commonId);
-      if (sentIDs.length > 0) {
-        const ids = sentIDs.join(",");
-        const authHeader = oauth.toHeader(
-          oauth.authorize(
-            {
-              url: `https://api.twitter.com/2/users?user.fields=profile_image_url&ids=${ids}`,
-              method: "GET",
-            },
-            tokenData
-          )
-        );
 
-        const url = `https://api.twitter.com/2/users?user.fields=profile_image_url&ids=${ids}`;
-
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            authorization: authHeader["Authorization"],
-            "User-Agent": "TwitterDevSampleCode",
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          const errorMessage = `Failed to get user objects - reason - ${errorData.status} - status - ${errorData.detail}`;
-          throw new Error(errorMessage);
-        }
-
-        const sendProfileData = await response.json();
-        console.log("User objects for unsendIDs", sendProfileData);
-        const sendUsernames = sendProfileData.data.map(
-          (item: any) => item.username
-        );
-        const sendUserProfileImageUrls = sendProfileData.data.map(
-          (item: any) => item.profile_image_url
-        );
-
-        console.log(sendUsernames);
-        if (sendUsernames.length > 0) {
-          const dmDetailsEntry = new DmDetails({
-            tweetid: tweetId,
-            timestamp: timestamp,
-            sentusers: sendUsernames,
-            sentprofileimageurl: sendUserProfileImageUrls,
-          });
-
-          await dmDetailsEntry.save();
-          console.log("dmDetailsEntry", dmDetailsEntry);
-        }
-      }
       // Add delay here
       await delay(4500);
     } catch (error: any) {
       console.error(error.message);
       unsendIDs.push(commonId);
       errors.push(error.message);
-      console.log("unsendIDs in sendDms", unsendIDs);
+    }
+  }
+
+  if (sentIDs.length > 0) {
+    const ids = sentIDs.join(",");
+    const authHeader = oauth.toHeader(
+      oauth.authorize(
+        {
+          url: `https://api.twitter.com/2/users?user.fields=profile_image_url&ids=${ids}`,
+          method: "GET",
+        },
+        tokenData
+      )
+    );
+
+    const url = `https://api.twitter.com/2/users?user.fields=profile_image_url&ids=${ids}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        authorization: authHeader["Authorization"],
+        "User-Agent": "TwitterDevSampleCode",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = `Failed to get user objects - reason - ${errorData.status} - status - ${errorData.detail}`;
+      throw new Error(errorMessage);
+    }
+
+    const sendProfileData = await response.json();
+    sentUsernames = sendProfileData.data.map((item: any) => item.username);
+    sentUserProfileImageUrls = sendProfileData.data.map(
+      (item: any) => item.profile_image_url
+    );
+
+    console.log("sentUsernames", sentUsernames);
+    console.log("sentUserProfileImageUrls", sentUserProfileImageUrls);
+
+    if (sentUsernames.length > 0) {
+      const dmDetailsEntry = new SentDmDetails({
+        tweetid: tweetId,
+        timestamp: timestamp,
+        sentusers: sentUsernames,
+        sentprofileimageurl: sentUserProfileImageUrls,
+      });
+
+      await dmDetailsEntry.save();
+      console.log("Sent users are saved in db");
     }
   }
 
@@ -213,18 +212,16 @@ export async function POST(req: NextRequest) {
     }
 
     const unsendProfileData = await response.json();
-    console.log("User objects for unsendIDs", unsendProfileData);
-    const unsendUsernames = unsendProfileData.data.map(
-      (item: any) => item.username
-    );
-    const unsendUserProfileImageUrls = unsendProfileData.data.map(
+    unsendUsernames = unsendProfileData.data.map((item: any) => item.username);
+    unsendUserProfileImageUrls = unsendProfileData.data.map(
       (item: any) => item.profile_image_url
     );
 
     console.log(unsendUsernames);
     console.log(unsendUserProfileImageUrls);
+
     if (unsendUsernames.length > 0) {
-      const dmDetailsEntry = new DmDetails({
+      const dmDetailsEntry = new UnsentDmDetails({
         tweetid: tweetId,
         timestamp: timestamp,
         unsentusers: unsendUsernames,
@@ -232,7 +229,7 @@ export async function POST(req: NextRequest) {
       });
 
       await dmDetailsEntry.save();
-      console.log("dmDetailsEntry", dmDetailsEntry);
+      console.log("Unsent users are saved in db");
     }
   }
 
@@ -241,14 +238,14 @@ export async function POST(req: NextRequest) {
       message: errors.join(", "),
       success: false,
       statusbar: "error",
-      unsendUsernames: unsendUsernames,
-      unsendprofileImageUrls: unsendUserProfileImageUrls,
     });
   }
 
   return NextResponse.json({
     message: "DMs sent successfully",
     success: true,
+    sentUsernames: sentUsernames,
+    sentprofileImageUrls: sentUserProfileImageUrls,
     unsendUsernames: unsendUsernames,
     unsendprofileImageUrls: unsendUserProfileImageUrls,
   });

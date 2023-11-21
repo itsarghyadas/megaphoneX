@@ -98,8 +98,14 @@ export default function MainDashboard() {
           fetchedData.map((data, index) => (
             <div
               key={index}
-              className="flex items-center justify-evenly border border-b-0 last:border-b lg:first:rounded-t-md lg:last:rounded-b-md py-3.5 lg:py-4"
+              className="flex relative items-center justify-evenly border border-b-0 last:border-b py-3.5 lg:py-4 hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
             >
+              <div className="absolute top-7 -left-10 ">
+                <p className="relative bg-gray-100 shadow-sm border border-slate-400 h-5 w-5 rounded flex items-center justify-center text-xs ">
+                  {index + 1}
+                </p>
+                <div className="w-5 h-1 border-b border-slate-400 absolute top-2 left-5"></div>
+              </div>
               <div className="w-4/5 md:w-2/3 flex flex-col gap-y-2 items-center justify-center">
                 <div className="flex items-start gap-x-2.5">
                   <div className="flex flex-col gap-y-1.5">
@@ -140,14 +146,14 @@ export default function MainDashboard() {
                 {data.status === "pending" ? (
                   <a
                     href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}`}
-                    className="mt-0.5 flex items-center justify-center text-sm font-medium bg-amber-400 text-black rounded-md h-8 w-20 px-3.5 py-2"
+                    className="mt-0.5 flex items-center justify-center text-sm font-medium bg-amber-400 hover:bg-neutral-800 hover:text-white text-black rounded-md h-8 w-20 px-3.5 py-2"
                   >
                     Pending
                   </a>
                 ) : (
                   <a
                     href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}`}
-                    className="h-8 w-20 mt-0.5 flex items-center justify-center text-xs md:text-sm font-medium bg-green-500 text-white rounded-md px-3.5 py-2"
+                    className="h-8 w-20 mt-0.5 flex items-center justify-center text-xs md:text-sm font-medium bg-green-500 hover:bg-neutral-800 hover:text-white text-white rounded-md px-3.5 py-2"
                   >
                     Done
                   </a>
