@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useSearchParams, useParams } from "next/navigation";
 import ResultComponent from "@/components/resultcomponent";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FcLike } from "react-icons/fc";
+import { FaRetweet, FaReply, FaQuoteRight } from "react-icons/fa";
+
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 const url = `${webUrl}/api/tweetiddata`;
 
@@ -36,7 +38,17 @@ const LoadingComponent = () => {
 export default function Idmetrix() {
   const searchParams = useSearchParams();
   const timeperiod = searchParams.get("timeperiod");
+  const condition = searchParams.get("condition");
+  const totalUser = searchParams.get("total");
+  const executiontTime = searchParams.get("executetime");
   const { id } = useParams();
+
+  console.log(id);
+  console.log(timeperiod);
+  const conditionArray = condition.split(",");
+  console.log(conditionArray);
+  console.log(totalUser);
+  console.log(executiontTime);
 
   const { data: fetchedUserData, isLoading } = useQuery(
     ["tweetData", url, timeperiod, id],
@@ -51,17 +63,49 @@ export default function Idmetrix() {
   console.log(unsentUser);
   return (
     <section className="py-14 md:py-20">
-      <section className="flex flex-col gap-y-4 p-8 md:px-10 md:py-10">
-        <h1 className="text-3xl font-bold text-center">Welcome 👋</h1>
-        <p className="text-center max-w-md mx-auto">
-          This is the dashboard page where you can see all the details about
-          when and what giveaway campaign you have started.{" "}
-        </p>
+      <section className="flex flex-col gap-y-8 p-8 md:px-10 md:py-10 max-w-md mx-auto">
+        <h1 className="text-3xl font-bold">Campaign Data</h1>
+        <div className="flex flex-col gap-y-3.5">
+          <a
+            href={`https://twitter.com/megaphonexuser/status/${id}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            TweetID{" "}
+            <span className="text-blue-500 underline underline-offset-4">
+              {id}
+            </span>
+          </a>
+          <div className="w-full flex gap-x-2 items-center justify-start">
+            Condtion:
+            {conditionArray && conditionArray.includes("like") && (
+              <FcLike className="text-base" />
+            )}
+            {conditionArray && conditionArray.includes("retweet") && (
+              <FaRetweet className="text-lg text-green-500" />
+            )}
+            {conditionArray && conditionArray.includes("comment") && (
+              <FaReply className="text-sm text-blue-500" />
+            )}
+            {conditionArray && conditionArray.includes("quote") && (
+              <FaQuoteRight className="text-sm text-orange-500" />
+            )}
+          </div>
+          <p>
+            Total User: <span className="text-blue-500">{totalUser}</span>
+          </p>
+          <p>
+            Execution Time:{" "}
+            <span className="text-blue-500">{executiontTime}</span>
+          </p>
+        </div>
       </section>
       {isLoading ? (
         <LoadingComponent />
       ) : (
-        fetchedUserData && <ResultComponent sentUser={sentUser} unsentUser={unsentUser} />
+        fetchedUserData && (
+          <ResultComponent sentUser={sentUser} unsentUser={unsentUser} />
+        )
       )}
     </section>
   );

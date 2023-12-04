@@ -128,3 +128,41 @@ export async function sendDms(
     console.error(error.message);
   }
 }
+
+export async function creditsUpdate(userId: string, lossCredits: number) {
+  try {
+    const res = await axios.post(`${webUrl}api/updatecredits`, {
+      userId,
+      lossCredits,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch credits");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      console.log("res.data in creditsUpdate", res.data);
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
+
+export async function creditsCheck(userId: string) {
+  try {
+    const res = await axios.post(`${webUrl}api/credits`, {
+      userId,
+    });
+    if (!res.data.success) {
+      throw new Error("Failed to fetch credits");
+    }
+    if (res.data === undefined) {
+      return "No data received from the server";
+    } else {
+      return res.data;
+    }
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}

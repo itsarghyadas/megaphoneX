@@ -7,9 +7,19 @@ import { FromtopAlertDialog } from "./formtopalertdialog";
 import { useClerk } from "@clerk/nextjs";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useCreditsStore } from "@/providers/creditsprovider";
 
 export default function SiteNav() {
   const { isSignedIn, user } = useUser();
+  const { credits } = useCreditsStore();
   const username = user?.username;
   const userAvatar = user?.imageUrl;
   const { signOut } = useClerk();
@@ -41,25 +51,39 @@ export default function SiteNav() {
               </Link>
             ) : (
               <div className="account__details flex items-center gap-x-3">
-                <img
-                  className="rounded-full w-6 h-6 ring-2 ring-slate-500/50"
-                  src={userAvatar}
-                  alt="useravatar"
-                />
-                <p className="font-semibold text-sm">{username}</p>
-                <div className="ml-5">
-                  <Button
-                    variant="outline"
-                    className="text-sm"
-                    onClick={() => {
-                      signOut().then(() => {
-                        window.location.href = "/";
-                      });
-                    }}
-                  >
-                    Sign out
-                  </Button>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none focus:ring-2 ring-offset-2 rounded-full">
+                    <div className="account__details flex items-center gap-x-3">
+                      <img
+                        className="rounded-full w-6 h-6 ring-2 ring-slate-500/50"
+                        src={userAvatar}
+                        alt="useravatar"
+                      />
+                      <p className="font-semibold text-sm">{credits}</p>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="mr-2 xl:mr-0">
+                    <DropdownMenuLabel>
+                      <p className="font-semibold text-sm">{username}</p>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <button
+                        onClick={() => {
+                          signOut().then(() => {
+                            window.location.href = "/";
+                          });
+                        }}
+                      >
+                        {" "}
+                        Sign out
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <a href="/dashboard">Dashboard</a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </ClerkLoaded>

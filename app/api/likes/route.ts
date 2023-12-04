@@ -61,7 +61,6 @@ export async function POST(req: NextRequest) {
       throw new Error("No likes found for this tweet");
     }
 
-    console.log("liked-ids", ids);
     return NextResponse.json({
       ids,
       result_count,

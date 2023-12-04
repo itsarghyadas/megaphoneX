@@ -16,6 +16,8 @@ import {
   totalUserNumbers,
   checkboxItems,
 } from "@/data/formitemsdata";
+import { useCreditsStore } from "@/providers/creditsprovider";
+import { HelpCircle } from "lucide-react";
 
 const FormSchema = z.object({
   posturl: z
@@ -43,6 +45,7 @@ interface AutoDmFormProps {
 }
 
 export default function AutoDMForm({ onSubmit }: AutoDmFormProps) {
+  const { credits } = useCreditsStore();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -86,14 +89,24 @@ export default function AutoDMForm({ onSubmit }: AutoDmFormProps) {
           label="Total User"
           radioOptions={totalUserNumbers}
         />
-        <Button
-          className="w-full text-[0.95rem] text-white bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] transition-[box-shadow_0.15s_ease,_transform_0.15s_ease] shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:translate-y-0.5 active:-translate-y-0.5 active:shadow-[inset_0px_3px_7px_#6903f6] hover:text-white"
-          role="button"
-          type="submit"
-          aria-label="Start your giveaway"
-        >
-          Start your giveaway
-        </Button>
+        {credits < 50 ? (
+          <Button
+            className="w-full text-[0.95rem] text-white bg-red-500  hover:bg-red-500 hover:bg-red-500/50 hover:text-white cursor-not-allowed transition-all duration-150 ease-in-out"
+            type="button"
+            aria-label="Insufficient credits"
+            onClick={() => toast.error("Insufficient credits")}
+          >
+            Insufficient credits
+          </Button>
+        ) : (
+          <Button
+            className="w-full text-[0.95rem] text-white bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] transition-[box-shadow_0.15s_ease,_transform_0.15s_ease] shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:translate-y-0.5 active:-translate-y-0.5 active:shadow-[inset_0px_3px_7px_#6903f6] hover:text-white"
+            type="submit"
+            aria-label="Start your giveaway"
+          >
+            Start your giveaway
+          </Button>
+        )}
       </form>
     </Form>
   );

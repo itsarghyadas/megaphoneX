@@ -4,7 +4,6 @@ import TwitterForm from "@/models/twittermodel";
 
 export async function POST(request: NextRequest) {
   const bodyData = await request.json();
-  console.log(bodyData);
   const userID = bodyData.userId;
   const posturl: string = bodyData.posturl;
   const message: string = bodyData.dmmessage;

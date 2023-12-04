@@ -37,14 +37,10 @@ export async function POST(req: any) {
     console.log("Successfully verified event", evt);
     const userId = evt.data.user_id;
     const user = await clerkClient.users.getUser(userId);
-    console.log("user", user);
 
     const userName = user.username;
     const userTwitterName = user.firstName;
     const userEmailId = user.emailAddresses[0].emailAddress;
-    console.log("userName", userName);
-    console.log("userTwitterName", userTwitterName);
-    console.log("userEmailId", userEmailId);
     const userCredits = 0;
 
     // check if user exists in db

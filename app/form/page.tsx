@@ -9,11 +9,14 @@ import {
   getQuoteIds,
   getReplyIds,
   sendDms,
+  creditsCheck,
+  creditsUpdate,
 } from "@/util/twitterapicall";
 import { getUserAccessTokenData } from "@/util/useracesstoken";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useCreditsStore } from "@/providers/creditsprovider";
 
 type DelayTimes = {
   [key: string]: number;
@@ -28,6 +31,7 @@ export default function MainFormPage() {
   const [tokenSecret, setTokenSecret] = useState<string>("");
   const { user } = useUser();
   const userId = user?.id;
+  const { credits, setCredits } = useCreditsStore();
 
   useEffect(() => {
     if (userId) {
@@ -80,6 +84,18 @@ export default function MainFormPage() {
     toast.success("Your submission is done");
     console.log(data);
     data.userId = userId;
+    const totalUserNumber: number = data.usernumber;
+    // Update credits
+    if (userId) {
+      creditsUpdate(userId, totalUserNumber);
+      creditsCheck(userId).then((creditsScore) => {
+        console.log("Credits score after update:", creditsScore);
+        const credits = creditsScore.credits;
+        console.log("Current credits after update check:", credits);
+        setCredits(credits);
+      });
+    }
+
     router.push("/dashboard");
     let timestamp: string = "";
     try {
@@ -98,7 +114,6 @@ export default function MainFormPage() {
     const message: string = data.dmmessage;
     const checkboxItems: string[] = data.checkboxItems;
     const executionTime: string = data.timeperiod;
-    const totalUserNumber: number = data.usernumber;
     const matchedId: RegExpMatchArray | null = posturl.match(/\/status\/(\d+)/);
     if (!matchedId) {
       return;

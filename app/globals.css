@@ -81,4 +81,8 @@
   body::-webkit-scrollbar-track {
     background: linear-gradient(180deg, transparent, black, transparent);
   }
+
+  .tweet__container:last-child .timeline__line {
+    border: none;
+  }
 }

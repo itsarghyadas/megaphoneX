@@ -36,7 +36,6 @@ export async function POST(request: NextRequest) {
 
     if (eventType === "checkout.session.completed") {
       const session = evt.data.object as StripeTypes.Checkout.Session;
-      console.log("Session", session);
       const totalAmountMoney = session.amount_total;
 
       let newCredits = 0;

@@ -78,7 +78,7 @@ export default function MainDashboard() {
           when and what giveaway campaign you have started.{" "}
         </p>
       </div>
-      <div className="flex max-w-lg mx-auto w-full flex-col">
+      <div className="flex max-w-[22rem] mx-auto w-full flex-col gap-y-12 py-10">
         {isLoading ? (
           <div className="flex flex-col gap-y-4">
             {[...Array(5)].map((_, index) => (
@@ -95,72 +95,69 @@ export default function MainDashboard() {
           </div>
         ) : (
           fetchedData &&
-          fetchedData.map((data, index) => (
-            <div
-              key={index}
-              className="flex relative items-center justify-evenly border border-b-0 last:border-b py-3.5 lg:py-4 hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
-            >
-              <div className="absolute top-7 -left-10 ">
-                <p className="relative bg-gray-100 shadow-sm border border-slate-400 h-5 w-5 rounded flex items-center justify-center text-xs ">
-                  {index + 1}
+          fetchedData
+            .slice()
+            .reverse()
+            .map((data, index) => (
+              <div
+                key={index}
+                className="tweet__container bg-white flex gap-x-10 relative items-center justify-between border py-3.5 lg:py-2.5 px-3.5 hover:bg-gray-50 rounded-md"
+              >
+                <div className="absolute -top-[25px] left-2 md:-top-5 md:-left-8 ">
+                  <p
+                    className={`relative ${
+                      data.status === "pending"
+                        ? "bg-amber-500"
+                        : "bg-green-500"
+                    } text-white shadow-sm border border-transparent h-5 w-5 rounded flex items-center justify-center text-xs`}
+                  >
+                    {index + 1}
+                  </p>
+                  <div className="w-5 h-1 border-b absolute top-2 left-5 -z-10 "></div>
+                  {/* <div
+                    className={`timeline__line w-1 h-24 border-l absolute top-4 left-2.5 -z-10 ${
+                      data.status === "pending"
+                        ? "border-amber-500/70"
+                        : "border-green-500/70"
+                    }`}
+                  ></div> */}
+                </div>
+                <p className="text-xs text-slate-500/70 absolute left-12 -top-[25px] md:-top-[22px] rounded-md rounded-b-none md:left-2 px-2 py-[3.5px] md:py-0.5 border z-30 w-fit ">
+                  {data.timestamp}
                 </p>
-                <div className="w-5 h-1 border-b border-slate-400 absolute top-2 left-5"></div>
-              </div>
-              <div className="w-4/5 md:w-2/3 flex flex-col gap-y-2 items-center justify-center">
-                <div className="flex items-start gap-x-2.5">
-                  <div className="flex flex-col gap-y-1.5">
-                    <a
-                      href={data.posturl}
-                      className=" text-blue-500 font-medium underline underline-offset-4 text-sm"
-                    >
-                      {data.tweetID}
-                    </a>
-                    <div className="w-full flex gap-x-2 items-center justify-center">
-                      {data.checkboxItems &&
-                        data.checkboxItems.includes("like") && (
-                          <FcLike className="text-sm" />
-                        )}
-                      {data.checkboxItems &&
-                        data.checkboxItems.includes("retweet") && (
-                          <FaRetweet className="text-base text-green-500" />
-                        )}
-                      {data.checkboxItems &&
-                        data.checkboxItems.includes("comment") && (
-                          <FaReply className="text-xs text-blue-500" />
-                        )}
-                      {data.checkboxItems &&
-                        data.checkboxItems.includes("quote") && (
-                          <FaQuoteRight className="text-xs text-orange-500" />
-                        )}
+                <div className="flex flex-col gap-y-2 items-center justify-center">
+                  <div className="flex items-start gap-x-2.5">
+                    <div className="flex flex-col gap-y-1.5">
+                      <a
+                        href={data.posturl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className=" text-blue-500 font-medium underline underline-offset-4 text-sm"
+                      >
+                        {data.tweetID}
+                      </a>
                     </div>
                   </div>
-                  <p className="w-full flex items-center justify-center text-xs md:text-sm font-medium border text-[#6903f6] rounded px-1.5 ">
-                    {data.timeperiod}
-                  </p>
-                  <p className="w-full flex items-center justify-center text-xs md:text-sm font-medium border text-[#6903f6] rounded px-1.5">
-                    {data.usernumber}
-                  </p>
+                </div>
+                <div className="flex items-center justify-center">
+                  {data.status === "pending" ? (
+                    <a
+                      href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}&condition=${data.checkboxItems}total=${data.usernumber}&executetime=${data.timeperiod}`}
+                      className="mt-0.5 flex items-center justify-center text-sm font-medium bg-amber-400 hover:bg-neutral-800 hover:text-white text-black rounded-md h-8 w-20 px-3.5 py-2"
+                    >
+                      Pending
+                    </a>
+                  ) : (
+                    <a
+                      href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}&condition=${data.checkboxItems}total=${data.usernumber}&executetime=${data.timeperiod}`}
+                      className="h-8 w-20 mt-0.5 flex items-center justify-center text-xs md:text-sm font-medium bg-green-500 hover:bg-neutral-800 hover:text-white text-white rounded-md px-3.5 py-2"
+                    >
+                      Done
+                    </a>
+                  )}
                 </div>
               </div>
-              <div className="w-1/3 flex gap-1 items-center justify-center">
-                {data.status === "pending" ? (
-                  <a
-                    href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}`}
-                    className="mt-0.5 flex items-center justify-center text-sm font-medium bg-amber-400 hover:bg-neutral-800 hover:text-white text-black rounded-md h-8 w-20 px-3.5 py-2"
-                  >
-                    Pending
-                  </a>
-                ) : (
-                  <a
-                    href={`/dashboard/${data.tweetID}?timeperiod=${data.timestamp}`}
-                    className="h-8 w-20 mt-0.5 flex items-center justify-center text-xs md:text-sm font-medium bg-green-500 hover:bg-neutral-800 hover:text-white text-white rounded-md px-3.5 py-2"
-                  >
-                    Done
-                  </a>
-                )}
-              </div>
-            </div>
-          ))
+            ))
         )}
       </div>
     </section>

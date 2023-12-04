@@ -5,7 +5,6 @@ import UnsentDmDetails from "@/models/unsenddmmodel";
 
 export async function POST(request: NextRequest) {
   const bodyData = await request.json();
-  console.log(bodyData);
   const { timeperiod, id } = bodyData;
 
   await connectDB();
@@ -18,9 +17,6 @@ export async function POST(request: NextRequest) {
     tweetID: id,
     timestamp: timeperiod,
   });
-
-  console.log(sentDmUserData);
-  console.log(unsentDmUserData);
 
   return NextResponse.json({ success: true,  sentDmUserData, unsentDmUserData });
 }

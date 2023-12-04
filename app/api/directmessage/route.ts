@@ -167,8 +167,6 @@ export async function POST(req: NextRequest) {
       (item: any) => item.profile_image_url
     );
 
-    console.log("sentUsernames", sentUsernames);
-    console.log("sentUserProfileImageUrls", sentUserProfileImageUrls);
 
     if (sentUsernames.length > 0) {
       const dmDetailsEntry = new SentDmDetails({
@@ -217,8 +215,6 @@ export async function POST(req: NextRequest) {
       (item: any) => item.profile_image_url
     );
 
-    console.log(unsendUsernames);
-    console.log(unsendUserProfileImageUrls);
 
     if (unsendUsernames.length > 0) {
       const dmDetailsEntry = new UnsentDmDetails({
