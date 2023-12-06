@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCreditsStore } from "@/providers/creditsprovider";
+import { MdOutlineGeneratingTokens } from "react-icons/md";
 
 export default function SiteNav() {
   const { isSignedIn, user } = useUser();
@@ -50,40 +51,45 @@ export default function SiteNav() {
                 Sign in
               </Link>
             ) : (
-              <div className="account__details flex items-center gap-x-3">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="outline-none focus:ring-2 ring-offset-2 rounded-full">
-                    <div className="account__details flex items-center gap-x-3">
-                      <img
-                        className="rounded-full w-6 h-6 ring-2 ring-slate-500/50"
-                        src={userAvatar}
-                        alt="useravatar"
-                      />
-                      <p className="font-semibold text-sm">{credits}</p>
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="mr-2 xl:mr-0">
-                    <DropdownMenuLabel>
-                      <p className="font-semibold text-sm">{username}</p>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <button
-                        onClick={() => {
-                          signOut().then(() => {
-                            window.location.href = "/";
-                          });
-                        }}
-                      >
-                        {" "}
-                        Sign out
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <a href="/dashboard">Dashboard</a>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <div className="account__manage flex items-center gap-x-8">
+                <div className=" select-none flex items-center justify-center gap-x-2 border-2 border-amber-400 rounded-full px-1 md:px-1.5 md:py-0.5">
+                  <MdOutlineGeneratingTokens className="text-2xl text-amber-400" />
+                  <p className="font-semibold text-sm">{credits}</p>
+                </div>
+                <div className="account__details select-none flex items-center gap-x-3">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="outline-none focus:ring-2 ring-offset-2 rounded-full">
+                      <div className="account__details flex items-center gap-x-3">
+                        <img
+                          className="rounded-full w-6 h-6 ring-2 ring-slate-500/50"
+                          src={userAvatar}
+                          alt="useravatar"
+                        />
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="mr-2 xl:mr-0">
+                      <DropdownMenuLabel>
+                        <p className="font-semibold text-sm">{username}</p>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <button
+                          onClick={() => {
+                            signOut().then(() => {
+                              window.location.href = "/";
+                            });
+                          }}
+                        >
+                          {" "}
+                          Sign out
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <a href="/dashboard">Dashboard</a>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             )}
           </ClerkLoaded>

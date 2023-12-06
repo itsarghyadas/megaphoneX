@@ -18,7 +18,7 @@ export function FromtopAlertDialog() {
         className="w-full bg-[#6903f6] text-white mx-auto font-medium text-base p-1 border-t-0 border-l-0 border-r-0 rounded-none"
       >
         <p className="cursor-pointer text-sm text-center">
-          As we are on a Twitter API Basic plan.{" "}
+          We have some Limitations 😓{" "}
           <span className="underline underline-offset-4">Learn More</span>
         </p>
       </AlertDialogTrigger>

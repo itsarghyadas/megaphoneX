@@ -65,7 +65,7 @@ export default function Idmetrix() {
     <section className="py-14 md:py-20">
       <section className="flex flex-col gap-y-8 p-8 md:px-10 md:py-10 max-w-md mx-auto">
         <h1 className="text-3xl font-bold">Campaign Data</h1>
-        <div className="flex flex-col gap-y-3.5">
+        <div className="flex flex-col mt-5 gap-y-3.5">
           <a
             href={`https://twitter.com/megaphonexuser/status/${id}`}
             rel="noopener noreferrer"

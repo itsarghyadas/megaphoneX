@@ -33,6 +33,10 @@
     --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(0, 0, 0, calc(var(--line-opacity) * 2));
   }
 
   .dark {
@@ -84,5 +88,581 @@
 
   .tweet__container:last-child .timeline__line {
     border: none;
+  }
+  .headline-container:before {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(0, 0, 0, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+
+    top: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .headline-container:before {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    top: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #fff 30%, transparent),
+      linear-gradient(to right, #fff 30%, transparent),
+      linear-gradient(#fff 30%, #fff 30%);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .headline-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .headline-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .paragraph-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .paragraph-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+  .button-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+  .dark .button-container::after {
+    --line-offset: 150px;
+    --line-width: calc(var(--line-offset) / 2 - 1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: calc(100% + var(--line-offset));
+    left: calc(var(--line-offset) / -2);
+    bottom: 0px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 5px 1px;
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent),
+      linear-gradient(to right, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+
+  .left-side-line::before {
+    --line-offset: 200px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -100px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .left-side-line::before {
+    --line-offset: 200px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -100px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .right-side-line::after {
+    --line-offset: 200px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -100px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+  .dark .right-side-line::after {
+    --line-offset: 200px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -100px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+
+  .left-side-big-line::before {
+    --line-offset: 300px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -75px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .left-side-big-line::before {
+    --line-offset: 300px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -75px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .left-side-big-line::after {
+    --line-offset: 300px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -75px;
+    right: 0;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+  .dark .left-side-big-line::after {
+    --line-offset: 300px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -75px;
+    right: 0;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+
+  .available-left-side-line::before {
+    --line-offset: 150px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -70px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .available-right-side-line::after {
+    --line-offset: 150px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -70px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+  .dark .available-left-side-line::before {
+    --line-offset: 150px;
+    --line-height: calc(var(--line-offset) 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    left: 0;
+    top: -70px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+    overflow: hidden;
+  }
+  .dark .available-right-side-line::after {
+    --line-offset: 150px;
+    --line-height: calc(var(--line-offset) / 2 * -1);
+    --line-opacity: 0.15;
+    --line-color: rgba(255, 255, 255, calc(var(--line-opacity) * 2));
+    content: "";
+    position: absolute;
+    width: 1px;
+    top: -70px;
+    height: calc(100% + var(--line-offset));
+    background: linear-gradient(
+      to bottom,
+      var(--line-color),
+      var(--line-color) 50%,
+      transparent 0,
+      transparent
+    );
+    background-size: 1px 5px;
+    -webkit-mask: linear-gradient(to top, #000 50%, transparent),
+      linear-gradient(to bottom, #000 50%, transparent),
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: destination-in;
+    mask-composite: exclude;
+  }
+
+  @media screen and (max-width: 768px) {
+    .headline-container:before {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .headline-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .paragraph-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .button-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .left-side-big-line::after {
+      top: -50px;
+    }
+    .left-side-big-line::before {
+      top: -50px;
+    }
+    .dark .headline-container:before {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .dark .headline-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .dark .paragraph-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .dark .button-container::after {
+      --line-offset: 45px;
+      --line-height: calc(var(--line-offset) / 2 * -1);
+      width: calc(100% + var(--line-offset));
+      left: calc(var(--line-offset) / -2);
+    }
+    .dark .left-side-big-line::after {
+      top: -50px;
+    }
+    .dark .left-side-big-line::before {
+      top: -50px;
+    }
+
+    .dark .available-left-side-line::before {
+      left: -100px;
+      top: -15px;
+    }
+    .dark .available-right-side-line::after {
+      right: -100px;
+      top: -85px;
+    }
+    .available-left-side-line::before {
+      left: -100px;
+      top: -15px;
+    }
+    .available-right-side-line::after {
+      right: -100px;
+      top: -85px;
+    }
   }
 }

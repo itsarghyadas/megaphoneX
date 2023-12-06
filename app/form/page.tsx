@@ -173,5 +173,9 @@ export default function MainFormPage() {
     }, delayTime);
   }
 
-  return <AutoDMForm onSubmit={onsubmit} />;
+  return (
+    <section className="form__page py-10 flex items-center justify-center">
+      <AutoDMForm onSubmit={onsubmit} />
+    </section>
+  );
 }
