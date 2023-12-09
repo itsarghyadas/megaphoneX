@@ -32,6 +32,7 @@ export default function MainFormPage() {
   const { user } = useUser();
   const userId = user?.id;
   const { credits, setCredits } = useCreditsStore();
+  const [formDisabled, setFormDisabled] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -82,17 +83,22 @@ export default function MainFormPage() {
 
   async function onsubmit(data: FieldValues) {
     toast.success("Your submission is done");
+    setFormDisabled(true); // Disable the form
+    setTimeout(() => {
+      setFormDisabled(false); // Enable the form after 15 minutes
+    }, 15 * 60 * 1000);
     console.log(data);
     data.userId = userId;
     const totalUserNumber: number = data.usernumber;
     // Update credits
     if (userId) {
-      creditsUpdate(userId, totalUserNumber);
-      creditsCheck(userId).then((creditsScore) => {
-        console.log("Credits score after update:", creditsScore);
-        const credits = creditsScore.credits;
-        console.log("Current credits after update check:", credits);
-        setCredits(credits);
+      creditsUpdate(userId, totalUserNumber).then(() => {
+        creditsCheck(userId).then((creditsScore) => {
+          console.log("Credits score after update:", creditsScore);
+          const credits = creditsScore.credits;
+          console.log("Current credits after update check:", credits);
+          setCredits(credits);
+        });
       });
     }
 
@@ -175,7 +181,7 @@ export default function MainFormPage() {
 
   return (
     <section className="form__page py-10 flex items-center justify-center">
-      <AutoDMForm onSubmit={onsubmit} />
+      <AutoDMForm onSubmit={onsubmit} disabled={formDisabled} />
     </section>
   );
 }
