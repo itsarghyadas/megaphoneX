@@ -18,7 +18,7 @@ import {
 import { useCreditsStore } from "@/providers/creditsprovider";
 import { MdOutlineGeneratingTokens } from "react-icons/md";
 
-const NeuButton = () => {
+const SigninButton = () => {
   return (
     <button className="px-6 py-2 font-medium bg-indigo-500 text-white w-fit rounded transition-all shadow-[3px_3px_0px_black] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]">
       <Link href="/sign-in">Sign in</Link>
@@ -35,6 +35,7 @@ export default function SiteNav() {
 
   return (
     <section className="navbar ">
+      <FromtopAlertDialog />
       <div className="border-b border-dashed">
         <section className="max-w-5xl mx-auto h-14 py-2 px-5 flex items-center justify-between ">
           <div className="site__logo">
@@ -53,13 +54,7 @@ export default function SiteNav() {
           <ClerkLoaded>
             {!isSignedIn ? (
               <div className="flex items-center gap-x-2">
-                <NeuButton />
-                {/*   <Link
-                  href="/sign-in"
-                  className={buttonVariants({ variant: "default" })}
-                >
-                  Sign in
-                </Link> */}
+                <SigninButton />
               </div>
             ) : (
               <div className="account__manage flex items-center gap-x-8">
@@ -106,7 +101,6 @@ export default function SiteNav() {
           </ClerkLoaded>
         </section>
       </div>
-      <FromtopAlertDialog />
     </section>
   );
 }
