@@ -36,7 +36,7 @@ export default function Home() {
         setCredits(credits);
       });
     }
-  }, [userId]);
+  }, [userId, setCredits]);
   return (
     <main className="flex flex-col items-center justify-center">
       <section className=" relative flex h-[88vh] flex-col items-center justify-center px-7 pb-8 pt-2 md:p-10 md:pt-0">
