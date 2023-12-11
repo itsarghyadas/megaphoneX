@@ -9,10 +9,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FcLike } from "react-icons/fc";
 import { FaRetweet, FaReply, FaQuoteRight } from "react-icons/fa";
 
+interface TweetData {
+  sentDmUserData: any; // replace 'any' with the actual type
+  unsentDmUserData: any; // replace 'any' with the actual type
+}
+
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 const url = `${webUrl}/api/tweetiddata`;
 
-const fetchTweetData = async (url, timeperiod, id) => {
+const fetchTweetData = async (
+  url: string,
+  timeperiod: string,
+  id: string
+): Promise<TweetData> => {
   const response = await axios.post(url, { timeperiod, id });
   return response.data;
 };
@@ -43,13 +52,20 @@ export default function Idmetrix() {
   const executiontTime = searchParams.get("executetime");
   const { id } = useParams();
 
-  const conditionArray = useMemo(() => condition.split(","), [condition]);
+  const conditionArray = useMemo(
+    () => (condition ? condition.split(",") : []),
+    [condition]
+  );
 
   const { data: fetchedUserData, isLoading } = useQuery(
     ["tweetData", url, timeperiod, id],
-    () => fetchTweetData(url, timeperiod, id)
+    () =>
+      fetchTweetData(
+        url,
+        Array.isArray(timeperiod) ? timeperiod[0] : timeperiod || "",
+        Array.isArray(id) ? id[0] : id || ""
+      )
   );
-
   const sentUser = fetchedUserData?.sentDmUserData;
   const unsentUser = fetchedUserData?.unsentDmUserData;
 
