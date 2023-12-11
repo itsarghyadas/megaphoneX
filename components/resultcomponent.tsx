@@ -12,7 +12,7 @@ export default function ResultComponent({
 }: ResultComponentProps) {
   console.log(sentUser, unsentUser);
   return (
-    <div className="max-w-sm mx-auto w-full">
+    <div className="max-w-sm mx-auto px-2 w-full">
       <Tabs defaultValue="sentuser" className="w-[400px]">
         <TabsList>
           <TabsTrigger
@@ -44,7 +44,7 @@ export default function ResultComponent({
                         src={item.sentprofileimageurl[userIndex]}
                         alt={`Profile Image ${userIndex}`}
                       />
-                      <p>{user}</p>
+                      <a href={`https://twitter.com/${user}`}>{user}</a>
                     </div>
                     ✅
                   </div>
@@ -68,7 +68,7 @@ export default function ResultComponent({
                         src={item.unsentprofileimageurl[userIndex]}
                         alt={`Profile Image ${userIndex}`}
                       />
-                      <p>{user}</p>
+                      <a href={`https://twitter.com/${user}`}>{user}</a>
                     </div>
                     <X color="red" />
                   </div>

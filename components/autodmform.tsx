@@ -1,6 +1,6 @@
 "use client";
-import { toast } from "sonner";
 
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldValues } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
@@ -41,7 +41,7 @@ const FormSchema = z.object({
 
 interface AutoDmFormProps {
   onSubmit: (data: FieldValues) => void;
-  disabled: boolean; // Add the disabled prop
+  disabled?: boolean;
 }
 
 export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
@@ -56,7 +56,7 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
   });
 
   return (
-    <section className="form__container max-w-xl w-full mx-auto">
+    <div className="form__container max-w-xl w-full mx-auto">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -110,16 +110,29 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
               Insufficient credits
             </Button>
           ) : (
-            <Button
-              className="w-full text-[0.95rem] text-white bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] transition-[box-shadow_0.15s_ease,_transform_0.15s_ease] shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:translate-y-0.5 active:-translate-y-0.5 active:shadow-[inset_0px_3px_7px_#6903f6] hover:text-white"
-              type="submit"
-              disabled={disabled}
+            <div
+              className=" cursor-pointer"
+              onClick={() => {
+                if (disabled) {
+                  toast.error("Wait until the form is enabled");
+                }
+              }}
             >
-              Start your giveaway
-            </Button>
+              <Button
+                className={`w-full text-[0.95rem] text-white ${
+                  disabled
+                    ? "bg-red-500 hover:shadow-none hover:text-white cursor-not-allowed transition-all duration-150 ease-in-out"
+                    : "bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] transition-[box-shadow_0.15s_ease,_transform_0.15s_ease] shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:shadow-[2px_2px_0px_2px_rgba(0,0,0,0.8)] hover:translate-y-0.5 active:-translate-y-0.5 active:shadow-[inset_0px_3px_7px_#6903f6] hover:text-white"
+                } `}
+                type="submit"
+                disabled={disabled}
+              >
+                Start your giveaway
+              </Button>
+            </div>
           )}
         </form>
       </Form>
-    </section>
+    </div>
   );
 }

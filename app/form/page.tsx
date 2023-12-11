@@ -1,6 +1,8 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import { MdTimer } from "react-icons/md";
 import { FieldValues } from "react-hook-form";
 import AutoDMForm from "@/components/autodmform";
 import {
@@ -17,6 +19,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useCreditsStore } from "@/providers/creditsprovider";
+import { useSubmitStore } from "@/providers/formdisablestatecontext";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type DelayTimes = {
   [key: string]: number;
@@ -32,7 +36,44 @@ export default function MainFormPage() {
   const { user } = useUser();
   const userId = user?.id;
   const { credits, setCredits } = useCreditsStore();
-  const [formDisabled, setFormDisabled] = useState(false);
+  const { isSubmitting, submitTime, setSubmitting } = useSubmitStore();
+
+  const [remainingTime, setRemainingTime] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    console.log("isSubmitting", isSubmitting);
+  }, [isSubmitting]);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (submitTime) {
+      const diff = Date.now() - new Date(submitTime).getTime();
+      if (diff < 1 * 60 * 1000) {
+        const remaining = 1 * 60 * 1000 - diff;
+        setRemainingTime(remaining);
+        intervalId = setInterval(() => {
+          setRemainingTime((prevRemainingTime) => prevRemainingTime - 1000);
+        }, 1000);
+        setTimeout(() => {
+          setSubmitting(false, null);
+          clearInterval(intervalId);
+        }, remaining);
+      } else {
+        setSubmitting(false, null);
+      }
+    }
+    return () => clearInterval(intervalId);
+  }, [submitTime]);
+
+  // Convert remaining time from milliseconds to minutes and seconds
+  const minutes = Math.floor(remainingTime / 60000);
+  const seconds = ((remainingTime % 60000) / 1000).toFixed(0);
 
   useEffect(() => {
     if (userId) {
@@ -82,11 +123,8 @@ export default function MainFormPage() {
   }
 
   async function onsubmit(data: FieldValues) {
+    setSubmitting(true, new Date().toISOString());
     toast.success("Your submission is done");
-    setFormDisabled(true); // Disable the form
-    setTimeout(() => {
-      setFormDisabled(false); // Enable the form after 15 minutes
-    }, 15 * 60 * 1000);
     console.log(data);
     data.userId = userId;
     const totalUserNumber: number = data.usernumber;
@@ -180,8 +218,19 @@ export default function MainFormPage() {
   }
 
   return (
-    <section className="form__page py-10 flex items-center justify-center">
-      <AutoDMForm onSubmit={onsubmit} disabled={formDisabled} />
+    <section className="form__page flex-col gap-y-2 py-10 h-full md:min-h-[calc(100vh-90px)] flex items-center justify-center">
+      {isSubmitting && isMounted && (
+        <Alert className="max-w-xl text-purple-500 flex items-center gap-x-2 mx-auto">
+          <div className="border rounded-full p-1 border-purple-500">
+            <MdTimer className="text-2xl fill-purple-500" />
+          </div>
+          <AlertDescription className="text-base font-medium">
+            Form will be enabled in {minutes}:{Number(seconds) < 10 ? "0" : ""}
+            {seconds}
+          </AlertDescription>
+        </Alert>
+      )}
+      <AutoDMForm onSubmit={onsubmit} disabled={isSubmitting} />
     </section>
   );
 }

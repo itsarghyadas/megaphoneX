@@ -37,7 +37,7 @@ export default function SiteNav() {
     <section className="navbar ">
       <FromtopAlertDialog />
       <div className="border-b border-dashed">
-        <section className="max-w-5xl mx-auto h-14 py-2 px-5 flex items-center justify-between ">
+        <section className="max-w-5xl mx-auto h-[3.7rem] py-3 px-5 flex items-center justify-between ">
           <div className="site__logo">
             <a href="/" className="font-bold text-lg">
               megaphoneX
@@ -57,7 +57,7 @@ export default function SiteNav() {
                 <SigninButton />
               </div>
             ) : (
-              <div className="account__manage flex items-center gap-x-8">
+              <div className="account__manage flex items-center gap-x-5">
                 <div className=" select-none flex items-center justify-center gap-x-2 border-2 border-amber-400 rounded-full px-1 md:px-1.5 md:py-0.5">
                   <MdOutlineGeneratingTokens className="text-2xl text-amber-400" />
                   <p className="font-semibold text-sm">{credits}</p>

@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         quantity: item.quantity,
       };
     }),
-    success_url: webUrl + `/form?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: webUrl + `/completed?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: webUrl,
     customer_email: userEmail,
   });
