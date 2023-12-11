@@ -26,7 +26,7 @@ const fetchTweetData = async (
   return response.data;
 };
 
-const LoadingComponent = React.memo(() => {
+function LoadingComponent() {
   return (
     <div className="max-w-sm mx-auto w-full flex flex-col gap-y-4 py-2">
       {[...Array(5)].map((_, index) => (
@@ -42,7 +42,9 @@ const LoadingComponent = React.memo(() => {
       ))}
     </div>
   );
-});
+}
+
+const MemoizedLoadingComponent = React.memo(LoadingComponent);
 
 export default function Idmetrix() {
   const searchParams = useSearchParams();
@@ -116,7 +118,7 @@ export default function Idmetrix() {
         </div>
       </div>
       {isLoading ? (
-        <LoadingComponent />
+        <MemoizedLoadingComponent />
       ) : (
         fetchedUserData && (
           <ResultComponent sentUser={sentUser} unsentUser={unsentUser} />

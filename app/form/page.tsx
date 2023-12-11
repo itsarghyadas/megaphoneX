@@ -69,7 +69,7 @@ export default function MainFormPage() {
       }
     }
     return () => clearInterval(intervalId);
-  }, [submitTime]);
+  }, [submitTime, setSubmitting]);
 
   // Convert remaining time from milliseconds to minutes and seconds
   const minutes = Math.floor(remainingTime / 60000);
