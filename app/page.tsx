@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCreditsStore } from "@/providers/creditsprovider";
 import { creditsCheck } from "@/util/twitterapicall";
 import { useUser } from "@clerk/nextjs";
+import { FaLink } from "react-icons/fa6";
 
 const GradientShadowButton = () => {
   const { isSignedIn } = useUser();
@@ -47,7 +48,10 @@ export default function Home() {
               className="w-full rounded-full py-2 h-8 bg-white text-primary hover:bg-white md:w-fit"
               variant="default"
             >
-              <a href="/pricing">Check our pricing</a>
+              <a href="/pricing">
+                Check our pricing
+                <FaLink className="inline-block ml-2" />
+              </a>
             </Button>
           </div>
           <div className="available-right-side-line relative isolate hidden lg:block"></div>

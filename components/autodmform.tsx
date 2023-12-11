@@ -52,6 +52,8 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       checkboxItems: [],
+      dmmessage:
+        "Hello! How are you? I hope you are doing well. Here it is your giveaway result.",
     },
   });
 

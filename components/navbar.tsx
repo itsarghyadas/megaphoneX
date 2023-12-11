@@ -58,10 +58,13 @@ export default function SiteNav() {
               </div>
             ) : (
               <div className="account__manage flex items-center gap-x-5">
-                <div className=" select-none flex items-center justify-center gap-x-2 border-2 border-amber-400 rounded-full px-1 md:px-1.5 md:py-0.5">
+                <a
+                  href="/pricing"
+                  className=" select-none flex items-center justify-center gap-x-2 border-2 border-amber-400 rounded-full px-1 md:px-1.5 md:py-0.5"
+                >
                   <MdOutlineGeneratingTokens className="text-2xl text-amber-400" />
-                  <p className="font-semibold text-sm">{credits}</p>
-                </div>
+                  <span className="font-semibold text-sm">{credits}</span>
+                </a>
                 <div className="account__details select-none flex items-center gap-x-3">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="outline-none focus:ring-2 ring-offset-2 rounded-full">
