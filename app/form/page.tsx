@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { MdTimer } from "react-icons/md";
 import { FieldValues } from "react-hook-form";
-import AutoDMForm from "@/components/autodmform";
+import AutoDMForm from "@/app/form/form-components/autodmform";
 import {
   getRetweetIds,
   getLikeIds,

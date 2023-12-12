@@ -68,6 +68,7 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
   const handleTemplateClick = (template: string) => {
     form.setValue("dmmessage", template);
     setSelectedTemplate(template);
+    console.log(selectedTemplate);
   };
 
   return (
@@ -76,8 +77,10 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
         {templates.map((template, index) => (
           <button
             key={index}
-            className={` h-8 md:h-10 border rounded-md bg-white text-sm md:text-base ${
-              template === selectedTemplate ? "bg-[#6903f7] text-white" : ""
+            className={` h-8 md:h-10 border rounded-md text-sm md:text-base ${
+              template === selectedTemplate
+                ? "bg-[#6903f6] text-white"
+                : "bg-white "
             } `}
             onClick={() => handleTemplateClick(template)}
           >
