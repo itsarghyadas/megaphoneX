@@ -223,7 +223,7 @@ export default function MainDashboard() {
         </p>
       </div>
 
-      <div className="flex max-w-[22rem] mx-auto w-full flex-col gap-y-12 py-10">
+      <div className="flex max-w-[22rem] mx-auto w-full flex-col gap-y-12">
         {isLoading ? (
           <div className="flex flex-col gap-y-4">
             {[...Array(5)].map((_, index) => (

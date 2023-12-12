@@ -665,4 +665,29 @@
       top: -85px;
     }
   }
+
+  .form__page::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #ffffff;
+    opacity: 0.1;
+    background-image: repeating-radial-gradient(
+        circle at 0 0,
+        transparent 0,
+        #e5e5f7 4px
+      ),
+      repeating-linear-gradient(#444cf755, #444cf7);
+    z-index: -1;
+  }
+
+  @media screen and (max-width: 768px) {
+    .form__page::before {
+      background-image: none;
+      background-color: #ffffff;
+    }
+  }
 }

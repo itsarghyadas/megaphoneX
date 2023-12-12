@@ -218,7 +218,7 @@ export default function MainFormPage() {
   }
 
   return (
-    <section className="form__page flex-col gap-y-2 py-10 h-full md:min-h-[calc(100vh-90px)] flex items-center justify-center">
+    <section className="form__page relative flex-col gap-y-2 py-10 h-full min-h-[calc(100vh-90px)] flex items-center justify-center">
       {isSubmitting && isMounted && (
         <Alert className="max-w-xl text-purple-500 flex items-center gap-x-2 mx-auto">
           <div className="border rounded-full p-1 border-purple-500">

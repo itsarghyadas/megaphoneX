@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 
@@ -138,8 +140,8 @@ function Pricing() {
     [isSignedIn, quantity]
   );
   return (
-    <div className="dashboard flex flex-col justify-center items-center pb-14 font-bold">
-      <div className="container mx-auto mb-32 max-w-4xl px-5 pt-8 pb-16 sm:mb-0 sm:pt-10">
+    <div className="dashboard flex flex-col justify-center items-center min-h-[calc(100vh-90px)] font-bold">
+      <div className="container mx-auto max-w-4xl px-5 sm:mb-0 py-8">
         <div className="sm:align-center sm:flex sm:flex-col">
           <h1 className="font-logo mt-4 text-center text-5xl font-bold md:text-6xl">
             Pricing
@@ -164,6 +166,16 @@ function Pricing() {
               handleClick={() => handleClick(2)}
               quantity={quantity}
             />
+          </div>
+          <div>
+            <Alert>
+              <AlertTitle>👋 Sorry for the inconvinience</AlertTitle>
+              <AlertDescription className="pt-2 font-semibold text-sm">
+                As per our terms of service, we do not offer refunds. We get
+                your request and start the campaign as soon as possible. So, we
+                can't offer refunds at the moment.
+              </AlertDescription>
+            </Alert>
           </div>
         </div>
       </div>

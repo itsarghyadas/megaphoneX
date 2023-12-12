@@ -76,12 +76,23 @@ export default function SiteNav() {
                         />
                       </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="mr-2 xl:mr-0">
+                    <DropdownMenuContent className="min-w-[11rem] mt-1.5 mr-2 xl:mr-0">
                       <DropdownMenuLabel>
                         <p className="font-semibold text-sm">{username}</p>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+
+                      <DropdownMenuItem className="cursor-pointer">
+                        <a href="/dashboard">Dashboard</a>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        <a href="/pricing">Buy Credits</a>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        <a href="/form">Start Giveaway</a>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="focus:bg-red-500 focus:text-white hover:bg-red-500 hover:text-white text-black cursor-pointer">
                         <button
                           onClick={() => {
                             signOut().then(() => {
@@ -92,9 +103,6 @@ export default function SiteNav() {
                           {" "}
                           Sign out
                         </button>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <a href="/dashboard">Dashboard</a>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

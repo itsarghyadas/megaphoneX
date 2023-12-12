@@ -7,10 +7,10 @@ import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
-import TextInputField from "@/components/form-components/textinputfield";
-import TextareaField from "@/components/form-components/textareafield";
-import CheckboxItem from "@/components/form-components/checkboxitem";
-import RadioSelector from "@/components/form-components/radiogroup";
+import TextInputField from "@/app/form/form-components/textinputfield";
+import TextareaField from "@/app/form/form-components/textareafield";
+import CheckboxItem from "@/app/form/form-components/checkboxitem";
+import RadioSelector from "@/app/form/form-components/radiogroup";
 import {
   executionTimeOptions,
   totalUserNumbers,
@@ -58,7 +58,7 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
   });
 
   return (
-    <div className="form__container max-w-xl w-full mx-auto">
+    <div className="form__container bg-white max-w-xl w-full mx-auto">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
