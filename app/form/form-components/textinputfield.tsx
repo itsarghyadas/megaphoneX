@@ -26,8 +26,11 @@ function TextInputField({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="font-bold underline underline-offset-4">
-            {label}
+          <FormLabel className="font-bold flex items-center justify-between gap-x-3.5 pb-2.5 ">
+            <div className="underline underline-offset-4">{label}</div>
+            <div>
+              <FormMessage className="text-xs border border-red-400/80 text-red-500/80 rounded-full px-1" />
+            </div>
           </FormLabel>
           <FormControl>
             <Input
@@ -39,7 +42,6 @@ function TextInputField({
               value={field.value || ""}
             />
           </FormControl>
-          <FormMessage />
         </FormItem>
       )}
     />
