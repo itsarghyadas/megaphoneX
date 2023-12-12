@@ -173,7 +173,7 @@ function Pricing() {
               <AlertDescription className="pt-2 font-semibold text-sm">
                 As per our terms of service, we do not offer refunds. We get
                 your request and start the campaign as soon as possible. So, we
-                can't offer refunds at the moment.
+                can&apos;t offer refunds at the moment.
               </AlertDescription>
             </Alert>
           </div>
