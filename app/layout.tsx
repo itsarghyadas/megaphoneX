@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import SiteNav from "@/components/navbar";
 import { Toaster } from "sonner";
 import TanStackProvider from "@/providers/tanstackprovider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const gabarito = Gabarito({
   weight: ["500", "700"],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <TanStackProvider>
             <SiteNav />
             {children}
+            <SpeedInsights />
             <Toaster richColors />
           </TanStackProvider>
         </body>
