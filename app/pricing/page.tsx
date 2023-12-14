@@ -3,6 +3,8 @@ import React, { useState, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
+import { FaLink } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
 
 const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
 
@@ -143,6 +145,14 @@ function Pricing() {
     <div className="dashboard flex flex-col justify-center items-center min-h-[calc(100vh-90px)] font-bold">
       <div className="container mx-auto max-w-4xl px-5 sm:mb-0 py-8">
         <div className="sm:align-center sm:flex sm:flex-col">
+          <div className="w-fit mx-auto bg-gradient-to-r from-orange-200 via-yellow-400 to-red-500 p-0.5 rounded-full">
+            <Button
+              className="w-full rounded-full py-2 h-8 bg-white/70 text-primary hover:bg-white md:w-fit"
+              variant="default"
+            >
+              <p>70 credits from us for new users</p>
+            </Button>
+          </div>
           <h1 className="font-logo mt-4 text-center text-5xl font-bold md:text-6xl">
             Pricing
           </h1>
