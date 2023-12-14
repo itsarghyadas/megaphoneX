@@ -41,7 +41,7 @@ export async function POST(req: any) {
     const userName = user.username;
     const userTwitterName = user.firstName;
     const userEmailId = user.emailAddresses[0].emailAddress;
-    const userCredits = 0;
+    const userCredits = 70;
 
     // check if user exists in db
     const existingUser = await User.findOne({ user_id: userId });
