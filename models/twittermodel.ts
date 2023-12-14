@@ -24,7 +24,7 @@ const twitterFormSchema = new Schema<ISubmittedTweetFromDocument>(
     status: { type: String, required: true },
     timestamp: {
       type: String,
-      default: () => moment().format("Do MMM YYYY h:mma"),
+      default: () => moment().utcOffset(330).format("Do MMM YYYY h:mma"),
     },
   },
   { collection: "twitterform" }
