@@ -18,6 +18,7 @@ import {
   checkboxItems,
 } from "@/data/formitemsdata";
 import { useCreditsStore } from "@/providers/creditsprovider";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const FormSchema = z.object({
   posturl: z
@@ -92,7 +93,7 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="md:border md:rounded-lg md:shadow-[0px_0px_40px_-25px_rgba(0,0,0,0.25)] flex flex-col gap-y-5 p-8 md:px-10 md:py-10"
+            className="md:border md:rounded-lg md:shadow-[0px_0px_40px_-25px_rgba(0,0,0,0.25)] flex flex-col gap-y-5 p-8 pt-2 md:px-10 md:py-10"
           >
             <TextInputField
               label="Post URL"

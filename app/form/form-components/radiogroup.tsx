@@ -33,8 +33,8 @@ function RadioSelector({
         <FormItem className="space-y-3">
           <FormLabel className="font-bold flex items-center justify-between gap-x-3.5 pb-2.5 ">
             <div className="underline underline-offset-4">{label}</div>
-            <div>
-              <FormMessage className="text-xs border border-red-400/80 text-red-500/80 rounded-full px-1" />
+            <div className="flex items-center justify-center gap-x-1">
+              <FormMessage className="text-[13px] font-[550] text-red-500 animate-pulse" />
             </div>
           </FormLabel>
           <FormControl>

@@ -54,8 +54,8 @@ export default function MainFormPage() {
     let intervalId: NodeJS.Timeout;
     if (submitTime) {
       const diff = Date.now() - new Date(submitTime).getTime();
-      if (diff < 1 * 60 * 1000) {
-        const remaining = 1 * 60 * 1000 - diff;
+      if (diff < 5 * 60 * 1000) {
+        const remaining = 5 * 60 * 1000 - diff;
         setRemainingTime(remaining);
         intervalId = setInterval(() => {
           setRemainingTime((prevRemainingTime) => prevRemainingTime - 1000);
@@ -218,18 +218,21 @@ export default function MainFormPage() {
   }
 
   return (
-    <section className="form__page relative flex-col gap-y-2 py-10 h-full min-h-[calc(100vh-90px)] flex items-center justify-center">
-      {isSubmitting && isMounted && (
-        <Alert className="max-w-xl text-purple-500 flex items-center gap-x-2 mx-auto">
-          <div className="border rounded-full p-1 border-purple-500">
-            <MdTimer className="text-2xl fill-purple-500" />
-          </div>
-          <AlertDescription className="text-base font-medium">
-            Form will be enabled in {minutes}:{Number(seconds) < 10 ? "0" : ""}
-            {seconds}
-          </AlertDescription>
-        </Alert>
-      )}
+    <section className="form__page relative flex-col gap-y-0.5 pt-10 md:pt-0 h-full min-h-[calc(100vh-90px)] flex items-center justify-center">
+      <div className="w-full px-7 mx-auto">
+        {isSubmitting && isMounted && (
+          <Alert className="w-full max-w-lg md:max-w-xl text-[#f62703] flex items-center gap-x-2 mx-auto py-2 px-2 md:py-3 md:px-5 border-2 border-[#f62703]">
+            <div className="border rounded-full p-1 border-[#f62703]">
+              <MdTimer className="text-sm md:text-lg fill-[#f62703]" />
+            </div>
+            <AlertDescription className="text-sm md:text-base font-medium">
+              Form will be enabled in {minutes}:
+              {Number(seconds) < 10 ? "0" : ""}
+              {seconds}
+            </AlertDescription>
+          </Alert>
+        )}
+      </div>
       <AutoDMForm onSubmit={onsubmit} disabled={isSubmitting} />
     </section>
   );
