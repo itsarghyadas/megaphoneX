@@ -31,29 +31,20 @@ export default function AfterPaymentRedirectPage() {
     }
   }, [sessionId, router]);
   return sessionId ? (
-    <div className="absolute backdrop-blur-sm bg-background/50 inset-0 m-auto flex items-center justify-center">
+    <div className="magicpattern absolute backdrop-blur-sm bg-background/50 inset-0 m-auto flex items-center justify-center">
       <div className="flex flex-col bg-white gap-y-5 border p-10 rounded-lg shadow-lg">
         <h2 className="max-w-xs mx-auto text-center">
           Your payment is successful, Now you can start your giveaway.{" "}
         </h2>
-        <div className="flex items-center justify-center gap-x-2">
-          <Link
-            href="/dashboard"
-            className={` ${buttonVariants({
-              variant: "outline",
-            })} rounded-md hover:bg-red-300 text-red-500 mx-auto`}
-          >
-            Go to dashboard
-          </Link>
-          <Link
-            href="/form"
-            className={` ${buttonVariants({
-              variant: "outline",
-            })} rounded-md hover:bg-green-300 text-green-500 mx-auto`}
-          >
-            Go to Giveaway form
-          </Link>
-        </div>
+
+        <Link
+          href="/dashboard"
+          className={` ${buttonVariants({
+            variant: "outline",
+          })} w-full rounded-md bg-green-500 hover:bg-green-600 hover:text-white text-white mx-auto`}
+        >
+          Go to dashboard
+        </Link>
       </div>
     </div>
   ) : null;

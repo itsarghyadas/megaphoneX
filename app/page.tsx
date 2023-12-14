@@ -32,6 +32,7 @@ export default function Home() {
   useEffect(() => {
     console.log("fetching credits");
     if (userId) {
+      console.log(userId);
       creditsCheck(userId).then((credtsScore) => {
         const credits = credtsScore.credits;
         console.log("Current credits in main page:", credits);
