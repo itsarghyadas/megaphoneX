@@ -30,6 +30,7 @@ export default function Home() {
   const userId = user?.id;
   const { credits, setCredits } = useCreditsStore();
   useEffect(() => {
+    console.log("fetching credits");
     if (userId) {
       creditsCheck(userId).then((credtsScore) => {
         const credits = credtsScore.credits;
