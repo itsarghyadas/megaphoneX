@@ -79,11 +79,10 @@ const MembershipOption = ({
       </div>
 
       <button
-        disabled
-        className={`disabled:cursor-not-allowed disabled:pointer-events-none mt-6 flex h-11 w-full cursor-pointer items-center justify-center rounded-lg px-8 py-2 text-base shadow drop-shadow transition-all hover:brightness-110 active:scale-95 ${
+        className={`mt-6 flex h-11 w-full items-center justify-center rounded-lg px-8 py-2 text-base shadow drop-shadow transition-all  ${
           disabled
-            ? "bg-[radial-gradient(100%_100%_at_100%_0%,_#fcfcfc_0%,_#e1e1e1_100%)]"
-            : "bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] text-white"
+            ? "bg-[radial-gradient(100%_100%_at_100%_0%,_#fcfcfc_0%,_#e1e1e1_100%)] cursor-not-allowed"
+            : "bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] cursor-pointer text-white hover:brightness-110 active:scale-95"
         }`}
         onClick={handleClick}
       >
