@@ -47,6 +47,7 @@ type MembershipOptionProps = {
   handleClick: () => void;
   incrementQuantity?: () => void;
   decrementQuantity?: () => void;
+  disabled?: boolean;
 };
 const MembershipOption = ({
   title,
@@ -56,6 +57,7 @@ const MembershipOption = ({
   handleClick,
   incrementQuantity,
   decrementQuantity,
+  disabled,
 }: MembershipOptionProps) => (
   <div className="option relative w-full border rounded-lg p-6 ">
     <div className="flex h-full flex-col">
@@ -77,7 +79,12 @@ const MembershipOption = ({
       </div>
 
       <button
-        className="mt-6 flex h-11 w-full cursor-pointer items-center justify-center rounded-lg bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] px-8 py-2 text-base text-white shadow drop-shadow transition-all hover:brightness-110 active:scale-95 "
+        disabled
+        className={`disabled:cursor-not-allowed disabled:pointer-events-none mt-6 flex h-11 w-full cursor-pointer items-center justify-center rounded-lg px-8 py-2 text-base shadow drop-shadow transition-all hover:brightness-110 active:scale-95 ${
+          disabled
+            ? "bg-[radial-gradient(100%_100%_at_100%_0%,_#fcfcfc_0%,_#e1e1e1_100%)]"
+            : "bg-[radial-gradient(100%_100%_at_100%_0%,_#af8bee_0%,_#6903f6_100%)] text-white"
+        }`}
         onClick={handleClick}
       >
         Get started
@@ -147,7 +154,7 @@ function Pricing() {
         <div className="sm:align-center sm:flex sm:flex-col">
           <div className="w-fit mx-auto bg-gradient-to-r from-orange-200 via-yellow-400 to-red-500 p-0.5 rounded-full">
             <Button
-              className="w-full rounded-full py-2 h-8 bg-white/70 text-primary hover:bg-white md:w-fit"
+              className="w-full rounded-full py-2 h-8 bg-white/70 hover:bg-white/70 text-primary md:w-fit"
               variant="default"
             >
               <p>70 credits from us for new users</p>
@@ -168,6 +175,7 @@ function Pricing() {
               incrementQuantity={incrementQuantity}
               decrementQuantity={decrementQuantity}
               quantity={quantity}
+              disabled
             />
             <MembershipOption
               title="Pro"
@@ -175,6 +183,7 @@ function Pricing() {
               price={15}
               handleClick={() => handleClick(2)}
               quantity={quantity}
+              disabled
             />
           </div>
           <div>

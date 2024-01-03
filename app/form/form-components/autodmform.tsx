@@ -69,7 +69,6 @@ export default function AutoDMForm({ onSubmit, disabled }: AutoDmFormProps) {
   const handleTemplateClick = (template: string) => {
     form.setValue("dmmessage", template);
     setSelectedTemplate(template);
-    console.log(selectedTemplate);
   };
 
   return (

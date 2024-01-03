@@ -134,7 +134,7 @@ export default function MainDashboard() {
                   href={`/dashboard/${item.tweetID}?timeperiod=${item.timestamp}&condition=${item.checkboxItems}&total=${item.usernumber}&executetime=${item.timeperiod}`}
                   className="h-8 w-20 mt-0.5 flex items-center justify-center text-xs md:text-sm font-medium bg-amber-500 hover:bg-neutral-800 hover:text-white text-white rounded-md px-3.5 py-2"
                 >
-                  Done
+                  Pending
                 </a>
               </div>
             </div>
